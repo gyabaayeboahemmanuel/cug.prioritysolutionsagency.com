@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --c-dark: #212529;
+    --c-brand: #4e57d4;
+    --c-brand-light: #6970dd;
+    --c-brand-rgb: 78, 87, 212;
+    --c-body: #727272;
+    --font-base: "ClashDisplay", sans-serif;
+    --box-shadow: 0px 15px 25px rgba(0,0,0,0.08);
+    --transition: all 0.5s ease;
+    --c-color-card2:#9b04ff;
+    --c-color-card3:#008cff;
+    --c-color-card4:#ff0400;
+}
+
+body {
+    font-family: var(--font-base);
+    line-height: 1.7;
+    color: var(--c-body);
+}
+
+/* Add this to your app.css or within a <style> tag */
+.card-custom-bg-card1 {
+    background-color: #ff9100;
+    color: white;
+    border-radius: 10px;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+.card-custom-bg-card2 {
+    background-color: #9b04ff;
+    color: white;
+    border-radius: 10px;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+.card-custom-bg-card3 {
+    background-color: #008cff;
+    color: white;
+    border-radius: 10px;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+.card-custom-bg-card4 {
+    background-color: #ff0400;
+    color: white;
+    border-radius: 10px;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Hover effect */
+.card-custom-bg-card1:hover {
+    background-color: white; /* Turns the card white on hover */
+    color: black; /* Turns the text black on hover */
+}
+.card-custom-bg-card2:hover {
+    background-color: white; /* Turns the card white on hover */
+    color: black; /* Turns the text black on hover */
+}
+.card-custom-bg-card3:hover {
+    background-color: white; /* Turns the card white on hover */
+    color: black; /* Turns the text black on hover */
+}
+.card-custom-bg-card4:hover {
+    background-color: white; /* Turns the card white on hover */
+    color: black; /* Turns the text black on hover */
+}
+.btn:hover {
+    background-color: white; /* Turns the card white on hover */
+    color: black; /* Turns the text black on hover */
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5);
+}
+
+.second {
+    margin-left: 10px;
+}
+
+.btn {
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+/* Add this to your app.css or within a <style> tag */
+.bold-card-title {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.shadowed-card {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5); /* Adjust the shadow as needed */
+}
+
+.list-group-item {
+    background-color: transparent; /* Makes the background transparent */
+    border: none;
+    list-style: none;
+}
+
+.list-group-item {
+    margin-bottom: -5px;
+    padding: 5px 0;
+}
+
+.list-group:hover{
+    color: white;
+}
+
+.home {
+    position: left;
+}
+
+/* SERVICE */
+.service {
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    box-shadow: var(--box-shadow);
+    border-radius: 5px;
+}
+
+.service::after {
+    content: "";
+    width: 40px;
+    height: 40px;
+    background: rgba(var(--c-brand-rgb), 0.2);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transition: var(--transition);
+}
+
+
+.service:hover::after {
+    width: 100%;
+    height: 100%;
+    background: var(--c-brand);
+    z-index: -1;
+}
+
+.service:hover h1,
+.service:hover p {
+    color: white;
+}
+
+.service:hover .iconbox {
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+}
+
+h1 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+p {
+    text-align: left;
+  }
+/* h5 {
+    text-align: left;
+  } */
+
+/* .btn{
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+} */
+
+.iconbox {
+    width: 70px;
+    height: 70px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(var(--c-brand-rgb), 0.1);
+    color: var(--c-brand);
+    font-size: 34px;
+    flex: none;
+}

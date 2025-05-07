@@ -1,0 +1,149 @@
+@extends('user.components.base')
+@section('application_active', 'active bg-gradient-primary')
+@section('content')
+@section('tertiary_active','active bg-gradient-secondary ')
+@section('ttext','text-white')
+    <div class="container mt-5">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('tertiarydetails.update', auth()->user()->app_id) }}" method="post" class="row g-3" enctype="multipart/form-data">
+            @csrf
+            @method('PATCH')
+            
+            <input type="hidden" name="app_id" readonly id="app_id" value="{{auth()->user()->app_id}}">
+
+            <h1>Tertiary Details</h1>
+
+            <!-- First Institution -->
+            <div class="row mb-4">
+                <h4>First Institution</h4>
+                <div class="col-md-6">
+                    <label for="institution_name" class="form-label">Institution Name</label>
+                    <input type="text" class="form-control" id="institution_name" value="{{ $td->institution_name }}" name="institution_name">
+                </div>
+                <div class="col-md-6">
+                    <label for="start_year" class="form-label">Start Year</label>
+                    <input type="number" class="form-control" id="start_year" value="{{ $td->start_year }}" name="start_year">
+                </div>
+                <div class="col-md-6">
+                    <label for="start_month" class="form-label">Start Month</label>
+                    <input type="text" class="form-control" id="start_month" value="{{ $td->start_month }}" name="start_month">
+                </div>
+                <div class="col-md-6">
+                    <label for="completion_year" class="form-label">Completion Year</label>
+                    <input type="number" class="form-control" id="completion_year" value="{{ $td->completion_year }}" name="completion_year">
+                </div>
+                <div class="col-md-6">
+                    <label for="completion_month" class="form-label">Completion Month</label>
+                    <input type="text" class="form-control" id="completion_month" value="{{ $td->completion_month }}" name="completion_month">
+                </div>
+                <div class="col-md-6">
+                    <label for="certificate_obtained" class="form-label">Certificate Obtained</label>
+                    <input type="text" class="form-control" id="certificate_obtained" value="{{ $td->certificate_obtained }}" name="certificate_obtained">
+                </div>
+            </div>
+
+            <!-- Button to show 2nd Institution -->
+            <button type="button" id="addSecondInstitution" class="btn btn-secondary mb-3"
+                style="{{ $td->institution_name2 ? 'display:none;' : '' }}">
+                Add 2nd Tertiary Details
+            </button>
+
+            <!-- Second Institution -->
+            <div class="row mb-4" id="secondInstitution" style="display: {{ $td->institution_name2 ? 'block' : 'none' }};">
+                <h4>Second Institution (Optional)</h4>
+                <div class="col-md-6">
+                    <label for="institution_name2" class="form-label">Institution Name</label>
+                    <input type="text" class="form-control" id="institution_name2" value="{{ $td->institution_name2 }}" name="institution_name2">
+                </div>
+                <div class="col-md-6">
+                    <label for="start_year2" class="form-label">Start Year</label>
+                    <input type="number" class="form-control" id="start_year2" value="{{ $td->start_year2 }}" name="start_year2">
+                </div>
+                <div class="col-md-6">
+                    <label for="start_month2" class="form-label">Start Month</label>
+                    <input type="text" class="form-control" id="start_month2" value="{{ $td->start_month2 }}" name="start_month2">
+                </div>
+                <div class="col-md-6">
+                    <label for="completion_year2" class="form-label">Completion Year</label>
+                    <input type="number" class="form-control" id="completion_year2" value="{{ $td->completion_year2 }}" name="completion_year2">
+                </div>
+                <div class="col-md-6">
+                    <label for="completion_month2" class="form-label">Completion Month</label>
+                    <input type="text" class="form-control" id="completion_month2" value="{{ $td->completion_month2 }}" name="completion_month2">
+                </div>
+                <div class="col-md-6">
+                    <label for="certificate_obtained2" class="form-label">Certificate Obtained</label>
+                    <input type="text" class="form-control" id="certificate_obtained2" value="{{ $td->certificate_obtained2 }}" name="certificate_obtained2">
+                </div>
+
+                <!-- Button to show 3rd Institution -->
+                <button type="button" id="addThirdInstitution" class="btn btn-secondary mb-3" 
+                    style="{{ $td->institution_name3 ? 'display:none;' : '' }}">
+                    Add 3rd Tertiary Details
+                </button>
+            </div>
+
+            <!-- Third Institution -->
+            <div class="row mb-4" id="thirdInstitution" style="display: {{ $td->institution_name3 ? 'block' : 'none' }};">
+                <h4>Third Institution (Optional)</h4>
+                <div class="col-md-6">
+                    <label for="institution_name3" class="form-label">Institution Name</label>
+                    <input type="text" class="form-control" id="institution_name3" value="{{ $td->institution_name3 }}" name="institution_name3">
+                </div>
+                <div class="col-md-6">
+                    <label for="start_year3" class="form-label">Start Year</label>
+                    <input type="number" class="form-control" id="start_year3" value="{{ $td->start_year3 }}" name="start_year3">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="start_month3" class="form-label">Start Month</label>
+                    <input type="text" class="form-control" id="start_month3" value="{{ $td->start_month3 }}" name="start_month3">
+                </div>
+                <div class="col-md-6">
+                    <label for="completion_year3" class="form-label">Completion Year</label>
+                    <input type="number" class="form-control" id="completion_year3" value="{{ $td->completion_year3 }}" name="completion_year3">
+                </div>
+                <div class="col-md-6">
+                    <label for="completion_month3" class="form-label">Completion Month</label>
+                    <input type="text" class="form-control" id="completion_month3" value="{{ $td->completion_month3 }}" name="completion_month3">
+                </div>
+                <div class="col-md-6">
+                    <label for="certificate_obtained3" class="form-label">Certificate Obtained</label>
+                    <input type="text" class="form-control" id="certificate_obtained3" value="{{ $td->certificate_obtained3 }}" name="certificate_obtained3">
+                </div>
+
+            </div>
+
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">Save and Continue</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addSecondInstitution').addEventListener('click', function() {
+            document.getElementById('secondInstitution').style.display = '';
+            this.style.display = 'none';
+        });
+
+        document.getElementById('addThirdInstitution').addEventListener('click', function() {
+            document.getElementById('thirdInstitution').style.display = '';
+            this.style.display = 'none';
+        });
+    </script>
+@endsection

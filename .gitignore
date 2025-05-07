@@ -1,0 +1,66 @@
+# Laravel Specific
+/vendor
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/logs/*
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+
+# Environment Files
+.env
+.env.backup
+.env.production
+.env.local
+.env.development
+.env.testing
+.env.staging
+
+# PHPUnit Cache
+.phpunit.cache
+.phpunit.result.cache
+
+# PHPStorm and VSCode files
+/.idea
+/.vscode
+
+# Ignore composer auth file
+auth.json
+
+# Ignore npm and yarn debug logs
+npm-debug.log
+yarn-error.log
+
+# Ignore Fleet (if you use it)
+/.fleet
+
+# Homestead and Docker configuration
+Homestead.json
+Homestead.yaml
+docker-compose.yml
+docker-compose.override.yml
+
+# Ignore all ZIP files
+*.zip
+
+# Ignore compiled class files
+.phpactor.json
+.phpunit.result.cache
+
+# Laravel Mix manifest
+/public/mix-manifest.json
+
+# Ignore all compiled assets
+/public/css/*.css
+/public/js/*.js
+
+# Ignore Frontend Cache
+/.cache
+
+# MacOS and Windows specific
+.DS_Store
+Thumbs.db

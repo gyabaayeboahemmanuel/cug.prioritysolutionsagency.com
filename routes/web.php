@@ -1,0 +1,172 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\Admin;
+
+// Frontend Controllers
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PublicFlyerController;
+use App\Http\Controllers\Frontend\PostFrontendController;
+use App\Http\Controllers\ContactController;
+
+// Authenticated Application Controllers
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\PersonalDetailsController;
+use App\Http\Controllers\ProgramDetailsController;
+use App\Http\Controllers\ContactDetailsController;
+use App\Http\Controllers\FamilyDetailsController;
+use App\Http\Controllers\AcademicDetailsController;
+use App\Http\Controllers\TertiaryDetailsController;
+use App\Http\Controllers\AttachedDocumentsController;
+use App\Http\Controllers\ProfileController;
+
+// Admin Controllers
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FlyerController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\VoucherController;
+
+// ================= FRONTEND ===================== //
+Route::get('/', [HomeController::class, 'home'])->name('welcome');
+Route::get('/news', [PostFrontendController::class, 'index'])->name('frontend.posts.show');
+Route::get('/news/{slug}', [PostFrontendController::class, 'show'])->name('frontend.post.show');
+Route::get('/flyers', [PublicFlyerController::class, 'index'])->name('public.flyers.index');
+Route::get('/flyers/{slug}', [PublicFlyerController::class, 'show'])->name('public.flyers.show');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// ================= AUTHENTICATED USER ROUTES ===================== //
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [ApplicationController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Application Steps
+    Route::get('/application', [ApplicationController::class, 'application'])->name('application');
+    Route::get('/application/{app_id}/summary', [ApplicationController::class, 'summary'])->name('application.summary');
+    Route::get('/application/{app_id}/print', [ApplicationController::class, 'print'])->name('application.print');
+
+    // ================= Personal Details ===================== //
+    Route::prefix('personaldetails')->group(function () {
+        Route::get('/', [PersonalDetailsController::class, 'index'])->name('personaldetails.index');
+        Route::get('/create', [PersonalDetailsController::class, 'create'])->name('personaldetails.create');
+        Route::post('/store', [PersonalDetailsController::class, 'store'])->name('personaldetails.store');
+        Route::get('/{app_id}/edit', [PersonalDetailsController::class, 'edit'])->name('personaldetails.edit');
+        Route::patch('/{app_id}', [PersonalDetailsController::class, 'update'])->name('personaldetails.update');
+        Route::delete('/{app_id}', [PersonalDetailsController::class, 'destroy'])->name('personaldetails.destroy');
+    });
+
+    // ================= Program Details ===================== //
+    Route::prefix('programdetails')->group(function () {
+        Route::get('/', [ProgramDetailsController::class, 'index'])->name('programdetails.index');
+        Route::get('/create', [ProgramDetailsController::class, 'create'])->name('programdetails.create');
+        Route::post('/store', [ProgramDetailsController::class, 'store'])->name('programdetails.store');
+        Route::get('/{app_id}/edit', [ProgramDetailsController::class, 'edit'])->name('programdetails.edit');
+        Route::patch('/{app_id}', [ProgramDetailsController::class, 'update'])->name('programdetails.update');
+        Route::delete('/{app_id}', [ProgramDetailsController::class, 'destroy'])->name('programdetails.destroy');
+    });
+
+    // ================= Contact Details ===================== //
+    Route::prefix('contactdetails')->group(function () {
+        Route::get('/', [ContactDetailsController::class, 'index'])->name('contactdetails.index');
+        Route::get('/create', [ContactDetailsController::class, 'create'])->name('contactdetails.create');
+        Route::post('/store', [ContactDetailsController::class, 'store'])->name('contactdetails.store');
+        Route::get('/{app_id}/edit', [ContactDetailsController::class, 'edit'])->name('contactdetails.edit');
+        Route::patch('/{app_id}', [ContactDetailsController::class, 'update'])->name('contactdetails.update');
+        Route::delete('/{app_id}', [ContactDetailsController::class, 'destroy'])->name('contactdetails.destroy');
+    });
+
+    // ================= Family Details ===================== //
+    Route::prefix('familydetails')->group(function () {
+        Route::get('/', [FamilyDetailsController::class, 'index'])->name('familydetails.index');
+        Route::get('/create', [FamilyDetailsController::class, 'create'])->name('familydetails.create');
+        Route::post('/store', [FamilyDetailsController::class, 'store'])->name('familydetails.store');
+        Route::get('/{app_id}/edit', [FamilyDetailsController::class, 'edit'])->name('familydetails.edit');
+        Route::patch('/{app_id}', [FamilyDetailsController::class, 'update'])->name('familydetails.update');
+        Route::delete('/{app_id}', [FamilyDetailsController::class, 'destroy'])->name('familydetails.destroy');
+    });
+
+    // ================= Academic Details ===================== //
+    Route::prefix('academicdetails')->group(function () {
+        Route::get('/', [AcademicDetailsController::class, 'index'])->name('academicdetails.index');
+        Route::get('/create', [AcademicDetailsController::class, 'create'])->name('academicdetails.create');
+        Route::post('/store', [AcademicDetailsController::class, 'store'])->name('academicdetails.store');
+        Route::get('/{app_id}/edit', [AcademicDetailsController::class, 'edit'])->name('academicdetails.edit');
+        Route::patch('/{app_id}', [AcademicDetailsController::class, 'update'])->name('academicdetails.update');
+        Route::delete('/{app_id}', [AcademicDetailsController::class, 'destroy'])->name('academicdetails.destroy');
+    });
+
+    // ================= Tertiary Details ===================== //
+    Route::prefix('tertiarydetails')->group(function () {
+        Route::get('/', [TertiaryDetailsController::class, 'index'])->name('tertiarydetails.index');
+        Route::get('/create', [TertiaryDetailsController::class, 'create'])->name('tertiarydetails.create');
+        Route::post('/store', [TertiaryDetailsController::class, 'store'])->name('tertiarydetails.store');
+        Route::get('/{app_id}/edit', [TertiaryDetailsController::class, 'edit'])->name('tertiarydetails.edit');
+        Route::patch('/{app_id}', [TertiaryDetailsController::class, 'update'])->name('tertiarydetails.update');
+        Route::delete('/{app_id}', [TertiaryDetailsController::class, 'destroy'])->name('tertiarydetails.destroy');
+    });
+
+    // ================= Attached Documents ===================== //
+    Route::prefix('attacheddocuments')->group(function () {
+        Route::get('/', [AttachedDocumentsController::class, 'index'])->name('attacheddocuments.index');
+        Route::get('/create', [AttachedDocumentsController::class, 'create'])->name('attacheddocuments.create');
+        Route::post('/store', [AttachedDocumentsController::class, 'store'])->name('attacheddocuments.store');
+        Route::get('/{app_id}/edit', [AttachedDocumentsController::class, 'edit'])->name('attacheddocuments.edit');
+        Route::patch('/{app_id}', [AttachedDocumentsController::class, 'update'])->name('attacheddocuments.update');
+        Route::delete('/{app_id}', [AttachedDocumentsController::class, 'destroy'])->name('attacheddocuments.destroy');
+    });
+});
+
+
+// ================= ADMIN ROUTES ===================== //
+Route::middleware(['auth', 'verified', Admin::class])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
+        // ✅ Add this group for consistent route naming
+        Route::prefix('admin')->as('admin.')->group(function () {
+            Route::resource('posts', PostController::class);
+            Route::resource('flyers', FlyerController::class);
+            Route::resource('testimonials', TestimonialController::class);
+            Route::resource('user', UserController::class);
+            Route::resource('vouchers', VoucherController::class);
+       
+        });
+    
+    Route::get('/admin/applicants', [ApplicantController::class, 'index'])->name('applicant.index');
+    Route::get('/admin/applicants/table', [PersonalDetailsController::class, 'adminIndex'])->name('admin.applicants.index');
+
+    // Programmes
+    Route::get('/admin/programme/index', [AdminController::class, 'programmeindex'])->name('programme.index');
+    Route::get('/admin/programme/create', [AdminController::class, 'programmecreate'])->name('programme.create');
+    Route::post('/admin/programme/store', [AdminController::class, 'programmestore'])->name('programme.store');
+
+    // Sectional Edits
+    Route::prefix('admin')->group(function () {
+        Route::get('application/{app_id}/print', [AdminController::class, 'printApplication'])->name('admin.application.print');
+
+        Route::get('personal-details/{app_id}/edit', [AdminController::class, 'editPersonalDetails'])->name('admin.personal-details.edit');
+        Route::post('personal-details/{app_id}/update', [AdminController::class, 'updatePersonalDetails'])->name('admin.personal-details.update');
+
+        Route::get('contact-details/{app_id}/edit', [AdminController::class, 'editContactDetails'])->name('admin.contact-details.edit');
+        Route::post('contact-details/{app_id}/update', [AdminController::class, 'updateContactDetails'])->name('admin.contact-details.update');
+
+        Route::get('family-details/{app_id}/edit', [AdminController::class, 'editFamilyDetails'])->name('admin.family-details.edit');
+        Route::post('family-details/{app_id}/update', [AdminController::class, 'updateFamilyDetails'])->name('admin.family-details.update');
+
+        Route::get('academic-details/{app_id}/edit', [AdminController::class, 'editAcademicDetails'])->name('admin.academic-details.edit');
+        Route::post('academic-details/{app_id}/update', [AdminController::class, 'updateAcademicDetails'])->name('admin.academic-details.update');
+
+        Route::get('tertiary-details/{app_id}/edit', [AdminController::class, 'editTertiaryDetails'])->name('admin.tertiary-details.edit');
+        Route::post('tertiary-details/{app_id}/update', [AdminController::class, 'updateTertiaryDetails'])->name('admin.tertiary-details.update');
+    });
+});
+
+// ================= UTILITIES ===================== //
+Route::get('/generate-pdf/{app_id}', [ApplicationController::class, 'generatePdf'])->name('generate.pdf');
+Route::get('/send-email/{id}', [ApplicantController::class, 'notifyApplicant'])->name('send.email');
+
+// ================= AUTH ROUTES ===================== //
+require __DIR__.'/auth.php';
