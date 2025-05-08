@@ -31,10 +31,11 @@
       </a>
     </li>
 
-    <li class="nav-item">
-      <a class="nav-link {{ request()->routeIs('reports.index') ? 'active' : '' }}" href="#">
-        <i class="bi bi-bar-chart-line"></i>
-        <span>Reports</span>
+      <!-- New Analytics Tab -->
+      <li class="nav-item">
+      <a class="nav-link {{ request()->routeIs('admin.analytics') ? 'active' : '' }}" href="{{ route('admin.analytics') }}">
+        <i class="bi bi-bar-chart-fill"></i>
+        <span>Analytics</span>
       </a>
     </li>
     <li class="nav-item">

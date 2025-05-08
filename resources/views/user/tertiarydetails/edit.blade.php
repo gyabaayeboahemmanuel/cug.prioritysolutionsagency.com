@@ -59,12 +59,12 @@
 
             <!-- Button to show 2nd Institution -->
             <button type="button" id="addSecondInstitution" class="btn btn-secondary mb-3"
-                style="{{ $td->institution_name2 ? 'display:none;' : '' }}">
+                style=" {{ $td->institution_name2 ? 'display:none;' : ''}} ">
                 Add 2nd Tertiary Details
             </button>
 
             <!-- Second Institution -->
-            <div class="row mb-4" id="secondInstitution" style="display: {{ $td->institution_name2 ? 'block' : 'none' }};">
+            <div class="row mb-4" id="secondInstitution" style="display: {{$td->institution_name2 ? 'block' : 'none' }};">
                 <h4>Second Institution (Optional)</h4>
                 <div class="col-md-6">
                     <label for="institution_name2" class="form-label">Institution Name</label>

@@ -15,7 +15,7 @@ class PdfController extends Controller
         if (!$user) {
             return redirect()->route('dashboard')->with('error', 'User not found');
         }
-dd(use Barryvdh\DomPDF\Facade;);
+
         // Render view with user data
         $pdf = Pdf::loadView('pdf.application_details', compact('user'));
 

@@ -22,6 +22,7 @@ use App\Http\Controllers\ProfileController;
 
 // Admin Controllers
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\FlyerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TestimonialController;
@@ -123,6 +124,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 // ================= ADMIN ROUTES ===================== //
+
+use Illuminate\Support\Facades\DB;
+
+Route::get('/admin/google-referrals-data', function () {
+    $results = DB::table('google_referrals')
+                ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+                ->groupBy('date')
+                ->get();
+
+    $labels = $results->pluck('date');
+    $counts = $results->pluck('count');
+
+    return response()->json([
+        'labels' => $labels,
+        'counts' => $counts
+    ]);
+});
+Route::get('/admin/analytics', [AnalyticsController::class, 'index'])->name('admin.analytics');
 Route::middleware(['auth', 'verified', Admin::class])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
         // ✅ Add this group for consistent route naming

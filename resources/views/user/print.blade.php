@@ -113,7 +113,8 @@
                         <td>{{ $pd->gender }}</td>
 
                         <th>Date of Birth: </th>
-                        <td>{{ $pd->date_of_birth }}</td>
+                        <td>{{ $pd->date_of_birth ? \Carbon\Carbon::parse($pd->date_of_birth)->format('jS F Y')  : 'Not Available' }}</td>
+
                     </tr>
                     <tr>
                         <th>Place of Birth: </th>
@@ -289,11 +290,12 @@
                         <td>{{ $ad->course_offered }}</td>
                     </tr>
                     <tr>
-                        <th>Year & Month Started:</th>
-                        <td>{{ $ad->start_date }}</td>
-                        <th>Year & Month Completed:</th>
-                        <td>{{ $ad->completion_date }}</td>
-                    </tr>
+    <th>Year & Month Started:</th>
+    <td>{{ $ad->start_date ? \Carbon\Carbon::parse($ad->start_date)->format('F Y') : 'Not Available' }}</td>
+    <th>Year & Month Completed:</th>
+    <td>{{ $ad->completion_date ? \Carbon\Carbon::parse($ad->completion_date)->format('F Y') : 'Not Available' }}</td>
+</tr>
+
                     <tr>
                         <th>Exams Type:</th>
                         <td>{{ $ad->exams_type }}</td>
@@ -325,11 +327,11 @@
                         <td>{{ $ad->course_offered2 }}</td>
                     </tr>
                     <tr>
-                        <th>Year & Month Started 2:</th>
-                        <td>{{ $ad->start_date2 }}</td>
-                        <th>Year & Month Completed 2:</th>
-                        <td>{{ $ad->completion_date2 }}</td>
-                    </tr>
+    <th>Year & Month Started 2:</th>
+    <td>{{ $ad->start_date2 ? \Carbon\Carbon::parse($ad->start_date2)->format('F Y') : 'Not Available' }}</td>
+    <th>Year & Month Completed 2:</th>
+    <td>{{ $ad->completion_date2 ? \Carbon\Carbon::parse($ad->completion_date2)->format('F Y') : 'Not Available' }}</td>
+</tr>
                     <tr>
                         <th>Exams Type 2:</th>
                         <td>{{ $ad->exams_type2 }}</td>
@@ -361,11 +363,11 @@
                         <td>{{ $ad->course_offered3 }}</td>
                     </tr>
                     <tr>
-                        <th>Year & Month Started 3:</th>
-                        <td>{{ $ad->start_date3 }}</td>
-                        <th>Year & Month Completed 3:</th>
-                        <td>{{ $ad->completion_date3 }}</td>
-                    </tr>
+    <th>Year & Month Started 3:</th>
+    <td>{{ $ad->start_date3 ? \Carbon\Carbon::parse($ad->start_date3)->format('F Y') : 'Not Available' }}</td>
+    <th>Year & Month Completed 3:</th>
+    <td>{{ $ad->completion_date3 ? \Carbon\Carbon::parse($ad->completion_date3)->format('F Y') : 'Not Available' }}</td>
+</tr>
                     <tr>
                         <th>Exams Type 3:</th>
                         <td>{{ $ad->exams_type_3 }}</td>

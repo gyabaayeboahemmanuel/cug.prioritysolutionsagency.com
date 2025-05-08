@@ -30,6 +30,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Title</th>
+                                    <th>Description</th>
                                     <th>Image</th>
                                     <th>Created</th>
                                     <th>Actions</th>
@@ -41,12 +42,25 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $post->title }}</td>
                                         <td>
+                                            <p>
+                                                {!! implode('. ', array_slice(explode('.', strip_tags($post->content)), 0, 5)) !!}
+                                                @if(count(explode('.', strip_tags($post->content))) > 5)
+                                                    ...
+                                                @endif
+                                            </p>
+                                        </td>
+
+                                        <td>
                                             @if($post->image_path)
-                                                <img src="{{ asset('storage/' . $post->image_path) }}" alt="" style="max-height: 60px;">
+                                                <img src="{{ asset('storage/' . $post->image_path) }}" 
+                                                     alt="Post Image" 
+                                                     style="max-height: 60px;" 
+                                                     onerror="this.onerror=null; this.src='{{ asset('images/no-image.png')}}';">
                                             @else
                                                 <span class="text-muted">No image</span>
                                             @endif
                                         </td>
+
                                         <td>{{ $post->created_at->format('M d, Y') }}</td>
                                         <td>
                                             <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-sm btn-warning">Edit</a>
@@ -64,7 +78,7 @@
                     </div>
 
                     <div class="d-flex justify-content-end mt-3">
-                        {{ $posts->links() }}
+                        {{ $posts->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
                     <p class="text-muted">No posts available.</p>

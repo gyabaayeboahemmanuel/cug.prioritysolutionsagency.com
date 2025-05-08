@@ -25,14 +25,19 @@
         @method('POST')
         <div class="mb-3">
     <label class="form-label">Academic Year</label>
-    <input name="academic_year" type="text" class="form-control" value="{{ old('academic_year', $pd->academic_year) }}" required>
+    <select name="academic_year" class="form-select" required>
+        <option value="2023/2024">2023/2024</option>
+        <option value="2024/2025">2024/2025</option>
+        <option value="2025/2026">2025/2026</option>
+        <option value="2026/2027">2026/2027</option>
+    </select>
 </div>
 
 <div class="mb-3">
     <label class="form-label">Form Type</label>
     <select name="form_type" class="form-select" required>
-        <option value="undergraduate" {{ old('form_type', $pd->form_type) == 'undergraduate' ? 'selected' : '' }}>Undergraduate</option>
-        <option value="postgraduate" {{ old('form_type', $pd->form_type) == 'postgraduate' ? 'selected' : '' }}>Postgraduate</option>
+        <option value="undergraduate">Undergraduate</option>
+        <option value="postgraduate">Postgraduate</option>
     </select>
 </div>
         <h1>Personal Details</h1>
@@ -169,7 +174,7 @@
             <input type="text" class="form-control" id="occupation" name="occupation">
         </div>
         <div class="col-md-4">
-            <label for="facility" class="form-label">Facility</label>
+            <label for="facility" class="form-label">Facility(Place of Work)</label>
             <input type="text" class="form-control" id="facility" name="facility">
         </div>
         <div class="col-md-4">

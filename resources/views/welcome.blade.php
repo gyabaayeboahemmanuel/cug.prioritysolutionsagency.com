@@ -110,7 +110,7 @@
                         Welcome to the <strong>Priority Admissions Office</strong><br>
                         — your official portal for applying to CUG.
                     </p>
-                    <p class="small text-muted fst-italic" data-aos="fade-up" data-aos-delay="200">
+                    <p class="small text-dark fst-italic" data-aos="fade-up" data-aos-delay="200">
                         Operated under official partnership with the Catholic University of Ghana Admissions Directorate through Priority Solutions Agency (PSA)
                     </p>
                     <a href="{{ route('register') }}" class="btn btn-brand btn-lg mt-3" data-aos="fade-up" data-aos-delay="300">
@@ -316,22 +316,22 @@
 
                 <!-- Faculty of Information & Communication Sciences and Technology -->
                 <div class="col-lg-4 col-sm-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card h-100">
-                        <img src="assets/images/faculty-ict.jpg" class="card-img-top" alt="ICT Faculty">
-                        <div class="card-body">
-                            <h5 class="card-title">Information & Comm. Sciences and Tech.</h5>
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#ictPrograms">View Programs</button>
-                            <div class="collapse mt-3" id="ictPrograms">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">BSc Business Analytics</li>
-                                    <li class="list-group-item">BSc Computer Science</li>
-                                    <li class="list-group-item">BSc Information Technology</li>
-                                    <li class="list-group-item">MSc Data Science</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="card h-100">
+        <img src="assets/images/faculty-ict.jpg" class="card-img-top" alt="CEMS Faculty">
+        <div class="card-body">
+            <h5 class="card-title">Computing, Engineering and Mathematical Sciences</h5>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#cemsPrograms">View Programs</button>
+            <div class="collapse mt-3" id="cemsPrograms">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">BSc Business Analytics</li>
+                    <li class="list-group-item">BSc Computer Science</li>
+                    <li class="list-group-item">BSc Information Technology</li>
+                    <li class="list-group-item">MSc Data Science</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
                 <!-- Faculty of Religions and Social Sciences -->
                 <div class="col-lg-4 col-sm-6" data-aos="fade-up" data-aos-delay="300">
@@ -606,18 +606,19 @@
                 </div>
             </div>
             <div class="row">
-                @foreach($posts as $post)
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="150">
-                    <div class="team-member image-zoom">
-                        <div class="image-zoom-wrapper">
-                            <img src="{{ asset('storage/' . $post->image_path) }}" alt="{{ $post->title }}">
-                        </div>
-                        <h5 class="mt-4">{{ $post->title }}</h5>
-                        <p>{{ Str::limit($post->content, 100) }}</p>
-                        <a href="{{ route('frontend.post.show', $post->slug) }}">Read More</a>
-                    </div>
-                </div>
-                @endforeach
+            @foreach($posts as $post)
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="150">
+        <div class="team-member image-zoom">
+            <div class="image-zoom-wrapper">
+                <img src="{{ asset('storage/' . $post->image_path) }}" alt="{{ $post->title }}">
+            </div>
+            <h5 class="mt-4">{{ $post->title }}</h5>
+            <p>{{ Str::limit(strip_tags($post->content), 100) }}</p>
+            <a href="{{ route('frontend.post.show', $post->slug) }}">Read More</a>
+        </div>
+    </div>
+@endforeach
+
             </div>
         </div>
     </section>

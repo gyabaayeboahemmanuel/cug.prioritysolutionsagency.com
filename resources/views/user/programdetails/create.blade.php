@@ -27,10 +27,10 @@
             <div class="col-md-12">
                 <label for="program" class="form-label">Select Admission Period</label>
                 <select class="form-select" id="program" name="program" required>
-                    <option value="">Select Program of Choice</option>
-                    <option value="January/February">January/February</option>
+                    <option value="">Select Admission Period</option>
+                    <option value="August/September">August/September(Reg/Wk) </option>
+                    <option value="January/February">January/February(Reg/Wk)</option>
                     <option value="June/July">June/July(Sandwich)</option>
-                    <option value="August/September">August/September</option>
                 </select>
             </div>
             <div class="col-md-6">
