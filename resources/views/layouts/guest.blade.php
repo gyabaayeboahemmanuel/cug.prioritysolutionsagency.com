@@ -21,7 +21,15 @@
     <meta property="og:image" content="{{ asset('assets/logos/school-logo.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17064362298"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'AW-17064362298');
+</script>
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     

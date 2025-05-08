@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Post;
+use App\Models\Flyer;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Admin;
 
@@ -189,3 +192,77 @@ Route::get('/send-email/{id}', [ApplicantController::class, 'notifyApplicant'])-
 
 // ================= AUTH ROUTES ===================== //
 require __DIR__.'/auth.php';
+
+
+// ================= SITEMAP ===================== //
+
+
+// ================= SITEMAP ROUTE =====================
+Route::get('/sitemap.xml', function () {
+    $content = '<?xml version="1.0" encoding="UTF-8"?>';
+    $content .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+    // Public routes
+    $publicRoutes = [
+        '/', '/news', '/flyers', '/contact'
+    ];
+
+    foreach ($publicRoutes as $route) {
+        $content .= '<url>';
+        $content .= '<loc>' . htmlspecialchars(url($route)) . '</loc>';
+        $content .= '<changefreq>weekly</changefreq>';
+        $content .= '<priority>0.8</priority>';
+        $content .= '</url>';
+    }
+
+   // Home page sections (fixed slashes for hash URLs)
+   $sections = ['#hero', '#about', '#services', '#faculties', '#reviews', '#team', '#contact', '#blog'];
+   foreach ($sections as $section) {
+       $content .= '<url>';
+       $content .= '<loc>' . env('APP_URL') . '/' . $section . '</loc>'; // Added a slash
+       $content .= '<changefreq>weekly</changefreq>';
+       $content .= '<priority>0.7</priority>';
+       $content .= '</url>';
+   }
+
+    // Fetching all blog posts
+    $posts = Post::all();
+    foreach ($posts as $post) {
+        $content .= '<url>';
+        $content .= '<loc>' . htmlspecialchars(url('/news/' . $post->slug)) . '</loc>';
+        $content .= '<changefreq>weekly</changefreq>';
+        $content .= '<priority>0.9</priority>';
+        $content .= '</url>';
+    }
+
+    // Fetching all flyers
+    $flyers = Flyer::all();
+    foreach ($flyers as $flyer) {
+        $content .= '<url>';
+        $content .= '<loc>' . htmlspecialchars(url('/flyers/' . $flyer->slug)) . '</loc>';
+        $content .= '<changefreq>weekly</changefreq>';
+        $content .= '<priority>0.9</priority>';
+        $content .= '</url>';
+    }
+
+    $content .= '</urlset>';
+
+    return response($content, 200)->header('Content-Type', 'application/xml');
+});
+
+
+// ==========================
+// Scheduled Command Setup
+// ==========================
+
+if (App::runningInConsole()) {
+    Artisan::command('sitemap:generate', function () {
+        Artisan::call('route:clear');
+        Artisan::call('cache:clear');
+        Artisan::call('config:clear');
+        Artisan::call('view:clear');
+        echo "Sitemap Regenerated Successfully.";
+    });
+
+    
+}

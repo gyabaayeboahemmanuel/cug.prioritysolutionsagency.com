@@ -8,7 +8,15 @@
   <meta name="description" content="@yield('meta_description', 'Apply for admission to Catholic University of Ghana through the Priority Admissions Office. Fast, secure, and officially approved.')">
   <meta name="keywords" content="@yield('meta_keywords', 'Catholic University of Ghana, CUG admissions, apply CUG, Ghana university admission, Priority Admissions Office, PSA')">
   <meta name="author" content="Catholic University of Ghana - Priority Admissions Office">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17064362298"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'AW-17064362298');
+</script>
   <!-- Canonical URL -->
   <link rel="canonical" href="{{ url()->current() }}" />
 

@@ -34,7 +34,15 @@
     <link rel="stylesheet" href="{{ asset('assets/bootstrap/font-awesome-4.7.0/css/font-awesome.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/1ov5HvXzjwV6JLkFgDQQ4uM6OITzUJmR5tW5P" crossorigin="anonymous">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17064362298"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'AW-17064362298');
+</script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- JS Scripts --}}

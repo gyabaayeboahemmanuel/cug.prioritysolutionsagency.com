@@ -8,7 +8,15 @@
     <meta name="description" content="Apply for admission to Catholic University of Ghana through the official Priority Admissions Office, operated under Priority Solutions Agency (PSA). Fast, secure and trusted." />
     <meta name="keywords" content="Catholic University of Ghana, CUG Admissions, Ghana universities, Priority Admissions, PSA Portal" />
     <script src="https://cdn.jsdelivr.net/npm/countup.js@2.0.7/dist/countUp.min.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17064362298"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'AW-17064362298');
+</script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
