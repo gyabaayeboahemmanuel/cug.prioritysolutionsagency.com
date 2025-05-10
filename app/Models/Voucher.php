@@ -9,7 +9,7 @@ class Voucher extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code', 'is_used', 'used_at'];
+    protected $fillable = ['code', 'is_used', 'used_at', 'claimed_by'];
 
     protected $casts = [
         'is_used' => 'boolean',

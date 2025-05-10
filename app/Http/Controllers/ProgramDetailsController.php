@@ -37,6 +37,7 @@ class ProgramDetailsController extends Controller
             'program' => 'required|string|max:255',
             'program_of_choice' => 'required|string|max:255',
             'streams' => 'required|string',
+            'mature_applicant' => 'nullable|string' 
         ]);
 
         // Create the new program details record
@@ -78,6 +79,7 @@ class ProgramDetailsController extends Controller
             'program' => 'required|string|max:255',
             'program_of_choice' => 'required|string|max:255',
             'streams' => 'required|string',
+            'mature_applicant' => 'nullable|string' 
         ]);
 
         $pgd = ProgramDetails::where('app_id', $request->app_id)->first();

@@ -13,7 +13,8 @@ class ProgramDetails extends Model
         'app_id',
         'program',
         'program_of_choice',
-        'streams'
+        'streams',
+        'mature_applicant',
     ];
 
     public function user()

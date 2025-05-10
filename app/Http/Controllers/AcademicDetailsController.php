@@ -48,6 +48,7 @@ class AcademicDetailsController extends Controller
             'exams_type2' => 'nullable|string|max:255',
             'index_number2' => 'nullable|string|max:255',
             'exams_year2' => 'nullable|numeric|digits:4',
+           
             // Third academic details (nullable)
             'name_of_shs3' => 'nullable|string|max:255',
             'course_offered3' => 'nullable|string|max:255',
@@ -87,6 +88,7 @@ class AcademicDetailsController extends Controller
      */
     public function update(Request $request, string $app_id)
     {
+        // dd($request->all());
         // Validate request data
         $data = $request->validate([
             'name_of_shs' => 'required|string|max:255',
@@ -96,6 +98,7 @@ class AcademicDetailsController extends Controller
             'exams_type' => 'required|string|max:255',
             'index_number' => 'required|string|max:255',
             'exams_year' => 'required|numeric|digits:4',
+            
             // Second academic details (nullable)
             'name_of_shs2' => 'nullable|string|max:255',
             'course_offered2' => 'nullable|string|max:255',

@@ -23,10 +23,10 @@
         </div>
     @endif
 
-    <form action="{{ route('contactdetails.store') }}" method="post" class="row g-3 shadow p-4 bg-white rounded">
+    <form action="{{ route('contactdetails.update', auth()->user()->app_id) }}" method="post" class="row g-3 shadow p-4 bg-white rounded">
         <input type="hidden" name="app_id" readonly id="app_id" value="{{ auth()->user()->app_id }}">
         @csrf
-        @method('POST')
+        @method('PATCH')
 
         <h4 class="mb-4">Contact Details</h4>
 
@@ -37,6 +37,7 @@
                    class="form-control" 
                    id="phone_number" 
                    placeholder="e.g., +233 24 123 4567" 
+                   value="{{ $cd->phone_number }}" 
                    name="phone_number" 
                    required>
         </div>
@@ -48,6 +49,7 @@
                    class="form-control" 
                    id="online_number" 
                    placeholder="e.g., +233 55 123 4567" 
+                   value="{{ $cd->online_number }}" 
                    name="online_number" 
                    required>
         </div>
@@ -59,6 +61,7 @@
                    class="form-control" 
                    id="email_address" 
                    placeholder="e.g., example@gmail.com" 
+                   value="{{ $cd->email_address }}" 
                    name="email_address" 
                    required>
         </div>
@@ -70,6 +73,7 @@
                    class="form-control" 
                    id="postal_address" 
                    placeholder="e.g., P.O. Box 123, Accra" 
+                   value="{{ $cd->postal_address }}" 
                    name="postal_address" 
                    required>
         </div>
@@ -81,6 +85,7 @@
                    class="form-control" 
                    id="city_of_post_office_box" 
                    placeholder="e.g., Kumasi, Sunyani" 
+                   value="{{ $cd->city_of_post_office_box }}" 
                    name="city_of_post_office_box">
         </div>
 
@@ -91,19 +96,20 @@
                    class="form-control" 
                    id="residential_address" 
                    placeholder="e.g., House No. 12, Adenta, Accra" 
+                   value="{{ $cd->residential_address }}" 
                    name="residential_address">
         </div>
 
         <!-- Navigation Buttons -->
         <div class="col-12 d-flex justify-content-between mt-4">
             <!-- Previous Button -->
-            <a href="{{ route('personaldetails.edit', auth()->user()->app_id) }}" class="btn btn-outline-secondary">
+            <a href="{{ route('personaldetails.edit', $cd->app_id) }}" class="btn btn-outline-secondary">
                 <i class="material-icons">arrow_back</i> Previous
             </a>
 
             <!-- Save Changes Button -->
             <button type="submit" class="btn btn-primary">
-                Save and Continue <i class="material-icons">save</i>
+                Save Changes <i class="material-icons">save</i>
             </button>
 
             <!-- Next Button -->
@@ -112,7 +118,7 @@
                     Next <i class="material-icons">arrow_forward</i>
                 </a>
             @else
-                <a class="btn btn-success" href="{{ route('familydetails.edit', auth()->user()->app_id) }}">
+                <a class="btn btn-success" href="{{ route('familydetails.edit', $cd->app_id) }}">
                     Next <i class="material-icons">arrow_forward</i>
                 </a>
             @endif

@@ -1,368 +1,688 @@
 @extends('user.components.base')
 @section('application_active', 'active bg-gradient-primary')
 @section('content')
-{{-- @include('user.components.application') --}}
+    <style>
+        /* General styles for the application form container on web */
+        .application-form-container {
+            width: 100%;
+            max-width: 960px;
+            margin: 20px auto;
+            padding: 20px;
+        }
 
-<a href="{{ route('application.print', auth()->user()->app_id)}}" target="_blank"><button>SUBMIT AND PRINT</button></a>
-<div class="container">
-    <div class="row">
-        <div class="col-3">
-            <img src="{{ asset('assets/logos/school-logo.png') }}" width='150px' class="rounded float-left"
-                alt="LOGO OF CUG">
+        /* Styles specifically for A4 printing */
+        @media print {
+            body {
+                width: 210mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .application-form-container {
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                width: 100% !important;
+            }
+        }
+
+        /* Common styles for both web and print */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: -15px;
+            margin-left: -15px;
+        }
+
+        .col-3,
+        .col-6,
+        .col-12 {
+            position: relative;
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            flex-basis: 0;
+            flex-grow: 1;
+            max-width: 100%;
+        }
+
+        .col-3 {
+            flex: 0 0 auto;
+            width: 25%;
+        }
+
+        .col-6 {
+            flex: 0 0 auto;
+            width: 50%;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table tbody+tbody {
+            border-top: 2px solid #dee2e6;
+        }
+
+        .text-success {
+            color: #28a745 !important;
+        }
+
+        .text-primary {
+            color: #007bff !important;
+        }
+
+        .rounded {
+            border-radius: 0.25rem !important;
+        }
+
+        .float-left {
+            float: left !important;
+        }
+
+        .me-sm-1 {
+            margin-right: 0.25rem !important;
+        }
+
+        hr {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <div class="application-form-container">
+        <div class="container row g-3 shadow p-4 bg-white rounded">
+            <div class="row">
+                <div class="col-3">
+                    <img src="{{ asset('assets/logos/school-logo.png') }}" width="150px" class="rounded float-left" alt="LOGO OF CUG">
+                </div>
+
+                <div class="col-6">
+                    <h2>CATHOLIC UNIVERSITY OF GHANA</h2>
+                    <h3>FIAPRE-SUNYANI</h3>
+                    <h4 @if ($pd->form_type === 'postgraduate') class="text-primary"
+                        @else
+                        class="text-success" @endif>
+                        {{ strtoupper($pd->form_type) }} ADMISSIONS
+                    </h4>
+
+                    <table class="table">
+                        <tr>
+                            <th scope="col">APPLICATION ID: </th>
+                            <td>{{ $pd->app_id }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">{{ $pgd->program }} {{ $pd->academic_year }} </th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-3">
+                    @if (!empty($pd->avatar))
+                        <img src="{{ asset('storage/' . $pd->avatar) }}" width="150px" class="rounded float-left me-sm-1" alt="APPLICANT'S PROFILE PHOTO">
+                    @endif
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-success">PERSONAL DETAILS</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Title: </th>
+                            <td>{{ $pd->title }}</td>
+                            <th>Surname: </th>
+                            <td>{{ $pd->surname }}</td>
+                        </tr>
+                        <tr>
+                            <th>Firstname: </th>
+                            <td>{{ $pd->first_name }}</td>
+                            <th>Middle Name: </th>
+                            <td>{{ $pd->middle_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Gender: </th>
+                            <td>{{ $pd->gender }}</td>
+
+                            <th>Date of Birth: </th>
+                            <td>{{ $pd->date_of_birth ? \Carbon\Carbon::parse($pd->date_of_birth)->format('jS F Y') : 'Not Available' }}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th>Place of Birth: </th>
+                            <td>{{ $pd->place_of_birth }}</td>
+                            <th>Region of Birth: </th>
+                            <td>{{ $pd->region_of_birth }}</td>
+                        </tr>
+                        <tr>
+                            <th>Hometown: </th>
+                            <td>{{ $pd->hometown }}</td>
+                            <th>Region of Hometown: </th>
+                            <td>{{ $pd->region_of_hometown }}</td>
+                        </tr>
+                        <tr>
+                            <th>Country: </th>
+                            <td>{{ $pd->country }}</td>
+                        </tr>
+                        <tr>
+                            <th>Marital Status: </th>
+                            <td>{{ $pd->marital_status }}</td>
+                            <th>Number of Children: </th>
+                            <td>{{ $pd->number_of_children }}</td>
+                        </tr>
+                        <tr>
+                            <th>Religion: </th>
+                            <td>{{ $pd->religion }}</td>
+                            <th>Worship Place: </th>
+                            <td>{{ $pd->worship_place }}</td>
+                        </tr>
+                        <tr>
+                            <th>Employed: </th>
+                            <td>{{ $pd->is_employed }}</td>
+                            <th>Occupation: </th>
+                            <td>{{ $pd->occupation }}</td>
+                        </tr>
+                        <tr>
+                            <th>Facility: </th>
+                            <td>{{ $pd->facility }}</td>
+                            <th>Intend Finance Education: </th>
+                            <td>{{ $pd->intend_finance_education }}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-success">CONTACT DETAILS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Phone Number: </th>
+                            <td>{{ $cd->phone_number }}</td>
+                            <th>Whatsapp Number: </th>
+                            <td>{{ $cd->online_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email's Address: </th>
+                            <td>{{ $cd->email_address }}</td>
+                            <th>Postal Address: </th>
+                            <td>{{ $cd->postal_address }}</td>
+                        </tr>
+                        <tr>
+                            <th>City of Post Office Box: </th>
+                            <td>{{ $cd->city_of_post_office_box }}</td>
+
+                            <th>Residential Address: </th>
+                            <td>{{ $cd->residential_address }}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-success">FAMILY DETAILS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Father's Full Name: </th>
+                            <td>{{ $fd->father_full_name }}</td>
+                            <th>Father's Status: </th>
+                            <td>{{ $fd->father_status }}</td>
+                        </tr>
+                        <tr>
+                            <th>Father's Address: </th>
+                            <td>{{ $fd->father_address }}</td>
+                            <th>Father's Contact: </th>
+                            <td>{{ $fd->father_contact }}</td>
+                        </tr>
+                        <tr>
+                            <th>Father's Occupation: </th>
+                            <td>{{ $fd->father_occupation }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mothers's Full Name: </th>
+                            <td>{{ $fd->mother_full_name }}</td>
+                            <th>Mother's Status: </th>
+                            <td>{{ $fd->mother_status }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mother's Address: </th>
+                            <td>{{ $fd->mother_address }}</td>
+                            <th>Mother's Contact: </th>
+                            <td>{{ $fd->mother_contact }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mother's Occupation: </th>
+                            <td>{{ $fd->mother_occupation }}</td>
+                        </tr>
+                        <tr>
+                            <th>Guardian's Full Name: </th>
+                            <td>{{ $fd->guardian_name }}</td>
+                            <th>Guardian's Relationship to Applicant: </th>
+                            <td>{{ $fd->relation_to_applicant }}</td>
+                        </tr>
+                        <tr>
+                            <th>Guardian's Address: </th>
+                            <td>{{ $fd->guardian_address }}</td>
+                            <th>Guardian's Contact: </th>
+                            <td>{{ $fd->guardian_phone_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Guardian's Occupation: </th>
+                            <td>{{ $fd->guardian_occupation }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {{-- PROGRAMME DETAILS --}}
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-success">PROGRAMME DETAILS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Program of Choice: </th>
+                            <td>{{ $pgd->program_of_choice }}</td>
+                            <th>Streams: </th>
+                            <td>{{ $pgd->streams }}</td>
+                            <th>Mature?: </th>
+                            <td>{{ $pgd->mature_applicant ?? 'No' }} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {{-- ACADEMIC DETAILS --}}
+            @if ($pd->form_type === 'undergraduate')
+                @if ($ad->name_of_shs || $ad->course_offered || $ad->start_date || $ad->completion_date)
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-success">ACADEMIC DETAILS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Name of SHS:</th>
+                                    <td>{{ $ad->name_of_shs }}</td>
+                                    <th>Course Offered:</th>
+                                    <td>{{ $ad->course_offered }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Year & Month Started:</th>
+                                    <td>{{ $ad->start_date ? \Carbon\Carbon::parse($ad->start_date)->format('F Y') : 'Not Available' }}</td>
+                                    <th>Year & Month Completed:</th>
+                                    <td>{{ $ad->completion_date ? \Carbon\Carbon::parse($ad->completion_date)->format('F Y') : 'Not Available' }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Exams Type:</th>
+                                    <td>{{ $ad->exams_type }}</td>
+                                    <th>Index Number:</th>
+                                    <td>{{ $ad->index_number }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Exams Year:</th>
+                                    <td>{{ $ad->exams_year }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+
+                @if ($ad->name_of_shs2 || $ad->course_offered2 || $ad->start_date2 || $ad->completion_date2)
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-success">ACADEMIC DETAILS 2</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Name of SHS 2:</th>
+                                    <td>{{ $ad->name_of_shs2 }}</td>
+                                    <th>Course Offered 2:</th>
+                                    <td>{{ $ad->course_offered2 }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Year & Month Started 2:</th>
+                                    <td>{{ $ad->start_date2 ? \Carbon\Carbon::parse($ad->start_date2)->format('F Y') : 'Not Available' }}</td>
+                                    <th>Year & Month Completed 2:</th>
+                                    <td>{{ $ad->completion_date2 ? \Carbon\Carbon::parse($ad->completion_date2)->format('F Y') : 'Not Available' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Exams Type 2:</th>
+                                    <td>{{ $ad->exams_type2 }}</td>
+                                    <th>Index Number 2:</th>
+                                    <td>{{ $ad->index_number2 }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Exams Year 2:</th>
+                                    <td>{{ $ad->exams_year2 }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+
+                @if ($ad->name_of_shs3 || $ad->course_offered3 || $ad->start_date3 || $ad->completion_date3)
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-success">ACADEMIC DETAILS 3</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Name of SHS 3:</th>
+                                    <td>{{ $ad->name_of_shs3 }}</td>
+                                    <th>Course Offered 3:</th>
+                                    <td>{{ $ad->course_offered3 }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Year & Month Started 3:</th>
+                                    <td>{{ $ad->start_date3 ? \Carbon\Carbon::parse($ad->start_date3)->format('F Y') : 'Not Available' }}</td>
+                                    <th>Year & Month Completed 3:</th>
+                                    <td>{{ $ad->completion_date3 ? \Carbon\Carbon::parse($ad->completion_date3)->format('F Y') : 'Not Available' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Exams Type 3:</th>
+                                    <td>{{ $ad->exams_type_3 }}</td>
+                                    <th>Index Number 3:</th>
+                                    <td>{{ $ad->index_number3 }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Exams Year 3:</th>
+                                    <td>{{ $ad->exams_year3 }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            @endif
+
+            {{-- TERTIARY DETAILS --}}
+            @if ($td->institution_name || $td->certificate_obtained || $td->start_year || $td->completion_year)
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                            <tr>
+
+                                <th scope="col" class="text-success">
+                                    @if ($pd->form_type === 'postgraduate')
+                                        E. Academic / Professional Qualifications: Undergraduate Qualification
+                                    @else
+                                        TERTIARY DETAILS
+                                    @endif
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Institution Name:</th>
+                                <td>{{ $td->institution_name }}</td>
+                                <th>Certificate Obtained:</th>
+                                <td>{{ $td->certificate_obtained }}</td>
+                            </tr>
+                            <tr>
+                                <th>Year & Month Started:</th>
+                                <td>{{ $td->start_month }}, {{ $td->start_year }}</td>
+                                <th>Year & Month Completed:</th>
+                                <td>{{ $td->completion_month }}, {{ $td->completion_year }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+
+            @if ($td->institution_name2 || $td->certificate_obtained2 || $td->start_year2 || $td->completion_year2)
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                            <tr>
+
+                                <th scope="col" class="text-success">
+                                    @if ($pd->form_type === 'postgraduate')
+                                        Graduate Qualification (If Any)
+                                    @else
+                                        TERTIARY DETAILS
+                                    @endif
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Institution Name:</th>
+                                <td>{{ $td->institution_name2 }}</td>
+                                <th>Certificate Obtained:</th>
+                                <td>{{ $td->certificate_obtained2 }}</td>
+                            </tr>
+                            <tr>
+                                <th>Year & Month Started:</th>
+                                <td>{{ $td->start_month2 }}, {{ $td->start_year2 }}</td>
+                                <th>Year & Month Completed:</th>
+                                <td>{{ $td->completion_month2 }}, {{ $td->completion_year2 }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+
+            @if ($td->institution_name3 || $td->certificate_obtained3 || $td->start_year3 || $td->completion_year3)
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-success">
+                                    @if ($pd->form_type === 'postgraduate')
+                                        Professional Qualifications (If Any):
+                                    @else
+                                        TERTIARY DETAILS
+                                    @endif
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Institution Name:</th>
+                                <td>{{ $td->institution_name3 }}</td>
+                                <th>Certificate Obtained:</th>
+                                <td>{{ $td->certificate_obtained3 }}</td>
+                            </tr>
+                            <tr>
+                                <th>Year & Month Started:</th>
+                                <td>{{ $td->start_month3 }}, {{ $td->start_year3 }}</td>
+                                <th>Year & Month Completed:</th>
+                                <td>{{ $td->completion_month3 }}, {{ $td->completion_year3 }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+
+
+            {{-- DECLARATION DETAILS --}}
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-success"> DECLARATION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                I declare that the information provided is genuine and reflects my true records. <br>(An
+                                applicant who makes a false declaration or withholds relevant information may be refused
+                                admission. <br> If he or she has come into the University already; he/she may be asked to
+                                withdraw)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                DATE: <span id="date"></span>
+                            </td>
+                            <td>
+                                SIGNATURE:
+                                @if (!empty($at->signature))
+                                    <img src="{{ asset('storage/' . $at->signature) }}" width='50px' class="rounded float-right" alt="signature of applicant">
+                                @endif
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- ENDORSEMENT DETAILS --}}
+            @if ($user->personalDetails->form_type != 'postgraduate')
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-success"> ENDORSEMENT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    The declaration in E. above must be endorsed below by someone of high repute. <br> This
+                                    person
+                                    should be a Parish Priest, Senior Public Servant or a person belonging to the learned
+                                    profession  <br>(e.g. Lawyer, Medical Practitioner) or a Headmaster/Principal of the
+                                    applicant’s
+                                    last educational institution)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    DATE: <span id="ceodate"></span>
+                                </td>
+                                <td>
+                                    SIGNATURE:
+                                    <img src="{{ asset('assets/logos/ceosignature.png') }}" width='50px' class="rounded float-right" alt="signature of applicant">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    NAME: MR. GYABAA YEBOAH EMMANUEL </br>
+                                    (CHIEF EXECUTIVE OFFICER, PRIORITY SOLUTIONS AGENCY)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+
+            {{-- REFERRAL DETAILS --}}
+
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-success"> Referral Details </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th> Name of Referrer: PRIORITY SOLUTIONS AGENCY</th>
+                            <td> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
-        <div class="col-6">
-            <h2>CATHOLIC UNIVERSITY OF GHANA</h2>
-            <h3>FIAPRE-SUNYANI</h3>
-            <h4>UNDERGRADUATE ADMISSIONS</h4>
-            <tr>
-                <th scope="col">APPLICATION ID: </th>
-                <td>{{$pd->app_id}}</td>
-            </tr>
-        </div>
-        <div class="col-3">
-            @if(!empty($pd->avatar))
-              
-            <img src="{{ asset('storage/'. $pd->avatar)}}" width='150px' class="rounded float-left me-sm-1" alt="APPLICANT'S PROFILE PHOTO">
-          @endif
-        </div>
-        <hr>
-    </div>
-    <div class="row">
-        <div class="col-12">
-        </div>
-    </div>
-    <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-success">PERSONAL DETAILS</th>
-                </tr>
-
-            </thead>
-            <tbody>
-                <tr>
-                    <th>Title: </th>
-                    <td>
-                        {{$pd->title}}
-                        {{-- @if($pd->gender == 'Male')
-                        Mr.
-                        @endif
-                        @if($pd->gender = 'Female')
-                        Ms/Mrs.
-                        @endif --}}
-                    </td>
-                    <th>Surname: </th>
-                    <td>{{ $pd->surname }}</td>
-                </tr>
-                <tr>
-                    <th>Firstname: </th>
-                    <td>{{ $pd->first_name }}</td>
-                    <th>Middle Name: </th>
-                    <td>{{ $pd->middle_name }}</td>
-                </tr>
-                <tr>
-                    <th>Gender: </th>
-                    <td>{{ $pd->gender }}</td>
-
-                    <th>Date of Birth: </th>
-                    <td>{{ $pd->date_of_birth }}</td>
-                </tr>
-                <tr>
-                    <th>Place of Birth: </th>
-                    <td>{{ $pd->place_of_birth }}</td>
-                    <th>Region of Birth: </th>
-                    <td>{{ $pd->region_of_birth }}</td>
-                </tr>
-                <tr>
-                    <th>Hometown: </th>
-                    <td>{{ $pd->hometown }}</td>
-                    <th>Region of Hometown: </th>
-                    <td>{{ $pd->region_of_hometown }}</td>
-                </tr>
-                <tr>
-                    <th>Country: </th>
-                    <td>{{ $pd->country }}</td>
-                </tr>
-                <tr>
-                    <th>Marital Status: </th>
-                    <td>{{ $pd->marital_status }}</td>
-                    <th>Number of Children: </th>
-                    <td>{{ $pd->number_of_children }}</td>
-                </tr>
-                <tr>
-                    <th>Religion: </th>
-                    <td>{{ $pd->religion }}</td>
-                    <th>Worship Place: </th>
-                    <td>{{ $pd->worship_place }}</td>
-                </tr>
-                <tr>
-                    <th>Employed: </th>
-                    <td>{{ $pd->is_employed }}</td>
-                    <th>Occupation: </th>
-                    <td>{{ $pd->occupation }}</td>
-                </tr>
-                <tr>
-                    <th>Facility: </th>
-                    <td>{{ $pd->facility }}</td>
-                    <th>Intend Finance Education: </th>
-                    <td>{{ $pd->intend_finance_education }}</td>
-                </tr>
-                <tr>
-
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
-    <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-success">CONTACT DETAILS</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>Phone Number: </th>
-                    <td>{{ $cd->phone_number }}</td>
-                    <th>Whatsapp Number: </th>
-                    <td>{{ $cd->online_number }}</td>
-                </tr>
-                <tr>
-                    <th>Email's Address: </th>
-                    <td>{{ $cd->email_address }}</td>
-                    <th>Postal Address: </th>
-                    <td>{{ $cd->postal_address }}</td>
-                </tr>
-                <tr>
-                    <th>City of Post Office Box: </th>
-                    <td>{{ $cd->city_of_post_office_box }}</td>
-
-                    <th>Residential Address: </th>
-                    <td>{{ $cd->residential_address }}</td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
-
-    <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-success">FAMILY DETAILS</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>Father's Full Name: </th>
-                    <td>{{ $fd->father_full_name }}</td>
-                    <th>Father's Status: </th>
-                    <td>{{ $fd->father_status }}</td>
-                </tr>
-                <tr>
-                    <th>Father's Address: </th>
-                    <td>{{ $fd->father_address }}</td>
-                    <th>Father's Contact: </th>
-                    <td>{{ $fd->father_contact }}</td>
-                </tr>
-                <tr>
-                    <th>Father's Occupation: </th>
-                    <td>{{ $fd->father_occupation }}</td>
-                </tr>
-                <tr>
-                    <th>Mothers's Full Name: </th>
-                    <td>{{ $fd->mother_full_name }}</td>
-                    <th>Mother's Status: </th>
-                    <td>{{ $fd->mother_status }}</td>
-                </tr>
-                <tr>
-                    <th>Mother's Address: </th>
-                    <td>{{ $fd->mother_address }}</td>
-                    <th>Mother's Contact: </th>
-                    <td>{{ $fd->mother_contact }}</td>
-                </tr>
-                <tr>
-                    <th>Mother's Occupation: </th>
-                    <td>{{ $fd->mother_occupation }}</td>
-                </tr>
-                <tr>
-                    <th>Guardian's Full Name: </th>
-                    <td>{{ $fd->guardian_name }}</td>
-                    <th>Guardian's Relationship to Applicant: </th>
-                    <td>{{ $fd->relation_to_applicant }}</td>
-                </tr>
-                <tr>
-                    <th>Guardian's Address: </th>
-                    <td>{{ $fd->guardian_address }}</td>
-                    <th>Guardian's Contact: </th>
-                    <td>{{ $fd->guardian_phone_number }}</td>
-                </tr>
-                <tr>
-                    <th>Guardian's Occupation: </th>
-                    <td>{{ $fd->guardian_occupation }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    {{-- PROGRAMME DETAILS --}}
-    <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-success">PROGRAMME DETAILS</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>Program of Choice: </th>
-                    <td>{{ $pgd->program_of_choice }}</td>
-                    <th>Streams: </th>
-                    <td>{{ $pgd->streams }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    {{-- EDUCATIONAL DETAILS --}}
-    <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-success">ACADEMIC DETAILS</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>Name of SHS: </th>
-                    <td>{{ $ad->name_of_shs }}</td>
-                    <th>Course Offered: </th>
-                    <td>{{ $ad->course_offered }}</td>
-                </tr>
-                <tr>
-                    <th>Year & Month Started: </th>
-                    <td>{{ $ad->start_date }}</td>
-                    <th>Year & Month Completed: </th>
-                    <td>{{ $ad->completion_date }}</td>
-                </tr>
-                <tr>
-                    <th>Exams Type: </th>
-                    <td>{{ $ad->exams_type }}</td>
-                    <th>Index Number: </th>
-                    <td>{{ $ad->index_number }}</td>
-                </tr>
-                <tr>
-                    <th>Exams year: </th>
-                    <td>{{ $ad->exams_year }}</td>
-                    <th>Course Offered: </th>
-                    <td>{{ $ad->course_offered }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    {{-- EDUCATIONAL DETAILS --}}
-    <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-success">TERTIARY DETAILS</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>Institution Name: </th>
-                    <td>{{ $td->institution_name }}</td>
-                    <th>Certificate Obtained: </th>
-                    <td>{{ $td->certificate_obtained }}</td>
-                </tr>
-                <tr>
-                    <th>Year & Month Started: </th>
-                    <td> {{ $td->start_month }}, {{ $td->start_year }}</td>
-                    <th>Year & Month Completed: </th>
-                    <td>
-                        {{ $td->completion_month }},{{ $td->completion_year }}
-                       
-
-                    </td>
-                </tr>
-                
-            </tbody>
-        </table>
     </div>
 
 
+    <script>
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth(); //January is 0!
+        var yyyy = today.getFullYear();
 
+        var monthNames = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
 
-    {{-- DECLARATION DETAILS --}}
-    <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-success"> DECLARATION</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td> I declare that the information provided is genuine and reflects my true records. (An
-                        applicant who makes a
-                        false declaration or withholds relevant information may be refused admission. If he or she
-                        has come
-                        into the University already; he/she may be asked to withdraw)</td>
-                </tr>
-                <tr>
-                    <td> DATE: </td>
-                    <td> SIGNATURE:<img src="{{ asset('storage/'.$at->signature) }}" width='50px' class="rounded float-right"
-                        alt="signature of applicant"> </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        function getOrdinalSuffix(day) {
+            if (day > 3 && day < 21) return 'th'; // for 4-20
+            switch (day % 10) {
+                case 1:
+                    return "st";
+                case 2:
+                    return "nd";
+                case 3:
+                    return "rd";
+                default:
+                    return "th";
+            }
+        }
 
+        var formattedDate = dd + getOrdinalSuffix(dd) + ' ' + monthNames[mm] + ', ' + yyyy;
 
-    {{-- ENDORSEMENT DETAILS --}}
-    <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-success"> ENDORSEMENT</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>The declaration in E. above must be endorsed below by someone of high repute. This person
-                        should be
-                        a Parish Priest, Senior Public Servant or a person belonging to the learned profession (e.g.
-                        Lawyer,
-                        Medical Practitioner) or a Headmaster/Principal of the applicant’s last educational
-                        institution)</td>
-                </tr>
-                <tr>
-                    <td> DATE:  </td>
-                    <td> SIGNATURE:  <img src="{{ asset('assets/logos/ceosignature.png') }}" width='50px' class="rounded float-right"
-                        alt="signature of applicant"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    
-    {{-- ENDORSEMENT DETAILS --}}
-    <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-success"> Referral Details  </th>
-                </tr>
-            </thead>
-            <tbody>           
-                <tr>
-                    <th> Name of Referrer:</th>
-                    <td> PRIORITY SOLUTIONS AGENCY </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-</div>
-
-
+        if (document.getElementById("date")) {
+            document.getElementById("date").innerHTML = formattedDate;
+        }
+        if (document.getElementById("ceodate")) {
+            document.getElementById("ceodate").innerHTML = formattedDate;
+        }
+    </script>
 @endsection

@@ -68,11 +68,13 @@
 
         <table class="table">
             <tr>
-                <th scope="col">APPLICATION ID: </th>
+                <th >APPLICATION ID: </th>
                 <td>{{ $pd->app_id }}</td>
+                
             </tr>
             <tr>
-                <th scope="col">{{ $pgd->program }} {{ $pd->academic_year }} </th>
+            <th >{{ $pd->academic_year }} </th>
+            <td> {{ $pgd->program }}</td>
             </tr>
         </table>
     </div>
@@ -268,6 +270,8 @@
                         <td>{{ $pgd->program_of_choice }}</td>
                         <th>Streams: </th>
                         <td>{{ $pgd->streams }}</td>
+                        <th>Mature?: </th>
+                        <td>{{ $pgd->mature_applicant ?? 'No' }} </td>
                     </tr>
                 </tbody>
             </table>

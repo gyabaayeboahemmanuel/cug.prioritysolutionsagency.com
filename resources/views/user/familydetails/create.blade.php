@@ -6,30 +6,32 @@
 
 <div class="container mt-5">
     @if(session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
     @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
-    <form action="{{ route('familydetails.store') }}" method="post" class="row g-3">
+    <form action="{{ route('familydetails.store') }}" method="post" class="row g-3 shadow p-4 bg-white rounded">
         @csrf
         @method('POST')
 
-        <h1 class="mb-4">Family Details</h1>
+        <h4 class="mb-4">Family Details</h4>
         <input type="hidden" name="app_id" id="app_id" value="{{ auth()->user()->app_id }}">
 
         <!-- Father's Information -->
-        <h4 class="text-primary mt-3">Father's Information</h4>
+        <h5 class="text-primary mt-3">Father's Information</h5>
         <div class="col-md-4">
             <label for="father_full_name" class="form-label">Full Name</label>
             <input type="text" class="form-control" id="father_full_name" name="father_full_name" required>
@@ -56,7 +58,7 @@
         </div>
 
         <!-- Mother's Information -->
-        <h4 class="text-primary mt-4">Mother's Information</h4>
+        <h5 class="text-primary mt-4">Mother's Information</h5>
         <div class="col-md-4">
             <label for="mother_full_name" class="form-label">Full Name</label>
             <input type="text" class="form-control" id="mother_full_name" name="mother_full_name" required>
@@ -83,7 +85,7 @@
         </div>
 
         <!-- Guardian's Information -->
-        <h4 class="text-primary mt-4">Guardian's Information <small class="text-muted">(Optional)</small></h4>
+        <h5 class="text-primary mt-4">Guardian's Information <small class="text-muted">(Optional)</small></h5>
         <div class="col-md-4">
             <label for="guardian_name" class="form-label">Name</label>
             <input type="text" class="form-control" id="guardian_name" name="guardian_name">
@@ -105,8 +107,22 @@
             <input type="text" class="form-control" id="guardian_phone_number" name="guardian_phone_number">
         </div>
 
-        <div class="col-md-12 text-center mt-4">
-            <button type="submit" class="btn btn-primary">Save and Continue</button>
+        <!-- Navigation Buttons -->
+        <div class="col-12 d-flex justify-content-between mt-4">
+            <!-- Previous Button -->
+            <a href="{{ route('contactdetails.edit', auth()->user()->app_id) }}" class="btn btn-outline-secondary">
+                <i class="material-icons">arrow_back</i> Previous
+            </a>
+
+            <!-- Save and Continue Button -->
+            <button type="submit" class="btn btn-primary">
+                Save and Continue <i class="material-icons">save</i>
+            </button>
+
+            <!-- Next Button -->
+            <a class="btn btn-success" href="{{ route('programdetails.create') }}">
+                Next <i class="material-icons">arrow_forward</i>
+            </a>
         </div>
     </form>
 </div>

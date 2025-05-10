@@ -18,12 +18,22 @@
     <meta property="og:site_name" content="Catholic University of Ghana">
 
     <title>Catholic University of Ghana | Application Portal</title>
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- Fonts and Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700">
     <link href="{{asset('admin/assets/css/nucleo-icons.css')}}" rel="stylesheet" />
     <link href="{{asset('admin/assets/css/nucleo-svg.css')}}" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+<!-- Add Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- Add jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Add Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
     <!-- Material Dashboard CSS -->
     <link id="pagestyle" href="{{asset('admin/assets/css/material-dashboard.css?v=3.1.0')}}" rel="stylesheet" />
@@ -44,7 +54,7 @@
         </nav>
 
         <!-- Main Content -->
-        <div class="container-fluid py-4">
+        <div class="container-fluid">
             @include('user.components.application')
             @yield('content')
         </div>
@@ -72,6 +82,16 @@
                     </div>
                 </div>
             </div>
+
+            <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+
         </footer>
     </main>
 

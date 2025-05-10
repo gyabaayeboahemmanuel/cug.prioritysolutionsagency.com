@@ -61,15 +61,16 @@
 </li>
 
 
-    @hasrole('admin')
+    <!-- @hasrole('admin') -->
     <li class="nav-heading">User Management</li>
 
     <li class="nav-item">
-      <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}" href="#">
+    <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}" href="{{ route('users.index') }}">
         <i class="bi bi-people"></i>
         <span>Manage Users</span>
-      </a>
-    </li>
+    </a>
+</li>
+
 
     <li class="nav-item">
       <a class="nav-link {{ request()->routeIs('roles.index') ? 'active' : '' }}" href="#">
@@ -84,7 +85,7 @@
         <span>Permissions</span>
       </a>
     </li>
-    @endhasrole
+    <!-- @endhasrole -->
 
     <li class="nav-heading">Account</li>
 

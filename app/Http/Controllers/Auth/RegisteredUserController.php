@@ -65,7 +65,7 @@ public function store(Request $request): RedirectResponse
     // Mark voucher as claimed
     $voucher->update([
         'claimed_by' => $user->app_id,
-        'claimed_at' => now(),
+        'used_at' => now(),
     ]);
 
     event(new Registered($user));

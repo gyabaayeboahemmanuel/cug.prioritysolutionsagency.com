@@ -34,6 +34,7 @@ class ApplicationController extends Controller
         return view('user.application')->with(['pd'=>$pd, 'at'=>$at]);
     }
     public function summary($app_id){
+       
         $pd = PersonalDetails::where('app_id', $app_id)->first();
         $cd = ContactDetails::where('app_id', $app_id)->first();
         $fd = FamilyDetails::where('app_id', $app_id)->first();
@@ -41,7 +42,9 @@ class ApplicationController extends Controller
         $ad = AcademicDetails::where('app_id', $app_id)->first();
         $td = TertiaryDetails::where('app_id', $app_id)->first();
         $at = AttachedDocuments::where('app_id', $app_id)->first();
-        return view('user.summary')->with(['pd'=> $pd,'cd'=>$cd, 'fd'=>$fd, 'pgd' =>$pgd, 'ad'=>$ad, 'td'=>$td , 'at'=>$at ]);
+        $user = auth()->user(); // or fetch by user_id if needed
+
+        return view('user.summary')->with(['pd'=> $pd,'cd'=>$cd, 'fd'=>$fd, 'pgd' =>$pgd, 'ad'=>$ad, 'td'=>$td , 'at'=>$at ,'user'=>$user,   'created_at' => $user->created_at]);
     }
     public function print($app_id)
     {

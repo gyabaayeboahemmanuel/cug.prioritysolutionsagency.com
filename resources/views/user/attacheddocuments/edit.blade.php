@@ -6,105 +6,91 @@
 
 <div class="container mt-5">
     @if (session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
     @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
     
-    <form action="{{ route('attacheddocuments.update', auth()->user()->app_id) }}" method="post" class="row g-3" enctype="multipart/form-data">
+    <form action="{{ route('attacheddocuments.update', auth()->user()->app_id) }}" method="post" class="row g-3 shadow p-4 bg-white rounded" enctype="multipart/form-data">
         @csrf
         @method('PATCH') 
         <input type="hidden" name="app_id" readonly id="app_id" value="{{ auth()->user()->app_id }}">
 
-        <h1>Upload Attached Documents</h1>
+        <h1 class="mb-4">Upload Attached Documents</h1>
 
-        <!-- Ghana Card -->
         <div class="col-md-6">
             <label for="ghanacard_upload_url" class="form-label">Ghana Card</label>
-            <br>
             <input type="file" class="form-control" id="ghanacard_upload_url" name="ghanacard_upload_url">
             @if ($atd->ghanacard_upload_url)
-                <a target="_blank" href="{{ asset('storage/' . $atd->ghanacard_upload_url) }}">VIEW GHANA CARD</a>
+                <a target="_blank" href="{{ asset('storage/' . $atd->ghanacard_upload_url) }}" class="mt-2 btn btn-link">View Ghana Card</a>
             @endif
         </div>
 
-        <!-- Birth Certificate -->
         <div class="col-md-6">
             <label for="birthcert_upload_url" class="form-label">Birth Certificate</label>
-            <br>
             <input type="file" class="form-control" id="birthcert_upload_url" name="birthcert_upload_url">
             @if ($atd->birthcert_upload_url)
-                <a target="_blank" href="{{ asset('storage/' . $atd->birthcert_upload_url) }}">VIEW BIRTH CERTIFICATE</a>
+                <a target="_blank" href="{{ asset('storage/' . $atd->birthcert_upload_url) }}" class="mt-2 btn btn-link">View Birth Certificate</a>
             @endif
         </div>
 
-        <!-- Signature -->
         <div class="col-md-6">
             <label for="signature" class="form-label">Signature Upload</label>
-            <br>
             <input type="file" class="form-control" id="signature" name="signature">
             @if ($atd->signature)
-                <a target="_blank" href="{{ asset('storage/' . $atd->signature) }}">VIEW SIGNATURE</a>
+                <a target="_blank" href="{{ asset('storage/' . $atd->signature) }}" class="mt-2 btn btn-link">View Signature</a>
             @endif
         </div>
 
-        <!-- WASSCE Result -->
         <div class="col-md-6">
             <label for="wassce_upload_url" class="form-label">WASSCE Result</label>
-            <br>
             <input type="file" class="form-control" id="wassce_upload_url" name="wassce_upload_url">
             @if ($atd->wassce_upload_url)
-                <a target="_blank" href="{{ asset('storage/' . $atd->wassce_upload_url) }}">VIEW WASSCE RESULT</a>
+                <a target="_blank" href="{{ asset('storage/' . $atd->wassce_upload_url) }}" class="mt-2 btn btn-link">View WASSCE Result</a>
             @endif
         </div>
 
-        <!-- Second WASSCE Result -->
         <div class="col-md-6">
             <label for="wassce2_upload_url" class="form-label">Second WASSCE Result</label>
-            <br>
             <input type="file" class="form-control" id="wassce2_upload_url" name="wassce2_upload_url">
             @if ($atd->wassce2_upload_url)
-                <a target="_blank" href="{{ asset('storage/' . $atd->wassce2_upload_url) }}">VIEW SECOND WASSCE RESULT</a>
+                <a target="_blank" href="{{ asset('storage/' . $atd->wassce2_upload_url) }}" class="mt-2 btn btn-link">View Second WASSCE Result</a>
             @endif
         </div>
 
-        <!-- Third WASSCE Result -->
         <div class="col-md-6">
             <label for="wassce3_upload_url" class="form-label">Third WASSCE Result</label>
-            <br>
             <input type="file" class="form-control" id="wassce3_upload_url" name="wassce3_upload_url">
             @if ($atd->wassce3_upload_url)
-                <a target="_blank" href="{{ asset('storage/' . $atd->wassce3_upload_url) }}">VIEW THIRD WASSCE RESULT</a>
+                <a target="_blank" href="{{ asset('storage/' . $atd->wassce3_upload_url) }}" class="mt-2 btn btn-link">View Third WASSCE Result</a>
             @endif
         </div>
 
-        <!-- Tertiary Institution Certificate -->
         <div class="col-md-6">
             <label for="tertiarycert_upload_url" class="form-label">Tertiary Institution Certificate</label>
-            <br>
             <input type="file" class="form-control" id="tertiarycert_upload_url" name="tertiarycert_upload_url">
             @if ($atd->tertiarycert_upload_url)
-                <a target="_blank" href="{{ asset('storage/' . $atd->tertiarycert_upload_url) }}">VIEW TERTIARY CERTIFICATE</a>
+                <a target="_blank" href="{{ asset('storage/' . $atd->tertiarycert_upload_url) }}" class="mt-2 btn btn-link">View Tertiary Certificate</a>
             @endif
         </div>
 
-        <!-- Save Button -->
         <div class="col-md-12 text-center mt-3">
             <button type="submit" class="btn btn-primary">Save and Continue</button>
         </div>
     </form>
 
-    <!-- Navigation Buttons -->
     <div class="row mt-4">
         <div class="col-md-6">
             @if (!empty($td->app_id))

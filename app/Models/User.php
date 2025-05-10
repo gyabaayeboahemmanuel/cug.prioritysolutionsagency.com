@@ -74,19 +74,20 @@ class User extends Authenticatable
                $this->attachedDocuments;
     }
  // New relationships for EmploymentDetails and References
- public function employmentDetails()
- {
-     return $this->hasMany(EmploymentDetail::class, 'app_id', 'app_id');
- }
 
- public function references()
- {
-     return $this->hasMany(Reference::class, 'app_id', 'app_id');
- }
+public function employmentdetails()
+{
+    return $this->hasMany(EmploymentDetail::class, 'app_id', 'app_id');
+}
 
- public function postgraduateDocuments()
- {
-     return $this->hasMany(PostgraduateDocuments::class, 'app_id', 'app_id');
- }
+public function references()
+{
+    return $this->hasMany(Reference::class, 'app_id', 'app_id');
+}
+
+public function postgraduatedocuments()
+{
+    return $this->hasMany(PostgraduateDocuments::class, 'app_id', 'app_id');
+}
 
 }

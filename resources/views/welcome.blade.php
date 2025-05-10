@@ -424,7 +424,21 @@
             </div>
         </div>
     </section>
-
+  <!-- Faculty of Religions and Social Sciences -->
+  <div class="col-lg-4 col-sm-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card h-100">
+                        <img src="assets/images/graduateschool.jpg" class="card-img-top" alt="Religion Faculty">
+                        <div class="card-body">
+                            <h5 class="card-title">School of Graduate Studies</h5>
+                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#religionPrograms">View Programs</button>
+                            <div class="collapse mt-3" id="religionPrograms">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">MA Religious Studies & Pastoral Ministry</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
     <!-- REVIEW -->
     @if($testimonials->count())
     <!-- REVIEW -->

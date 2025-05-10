@@ -129,7 +129,16 @@
                             @foreach($applicants as $applicant)
                                 <tr>
                                     <td>{{ $applicant->app_id }}</td>
-                                    <td>{{ $applicant->personalDetails->first_name}} {{ $applicant->personalDetails->middle_name}}{{ $applicant->personalDetails->surname}}</td>
+                                    <td>
+    @if($applicant->personalDetails)
+        {{ $applicant->personalDetails->first_name }} 
+        {{ $applicant->personalDetails->middle_name }} 
+        {{ $applicant->personalDetails->surname }}
+    @else
+        <span class="text-muted">No Details Found</span>
+    @endif
+</td>
+
                                     <td>{{ $applicant->created_at->format('M d, Y') }}</td>
                                     <td>{{ $applicant->status }}</td>
                                 </tr>
