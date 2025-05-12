@@ -48,7 +48,7 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 // ================= AUTHENTICATED USER ROUTES ===================== //
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [ApplicationController::class, 'dashboard'])->name('dashboard');
-
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -182,7 +182,7 @@ Route::get('/admin/google-referrals-data', function () {
 Route::get('/admin/analytics', [AnalyticsController::class, 'index'])->name('admin.analytics');
 Route::middleware(['auth', 'verified', Admin::class])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
-        // ✅ Add this group for consistent route naming
+        // Γ£à Add this group for consistent route naming
         Route::prefix('admin')->as('admin.')->group(function () {
             Route::resource('posts', PostController::class);
             Route::resource('flyers', FlyerController::class);
@@ -202,13 +202,13 @@ Route::middleware(['auth', 'verified', Admin::class])->group(function () {
 
    // Sectional Edits
 Route::prefix('admin')->group(function () {
-    Route::get('users', [UserController::class, 'index'])->name('users.index');
-    Route::get('users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('users/store', [UserController::class, 'store'])->name('users.store');
-    Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::patch('users/{id}', [UserController::class, 'update'])->name('users.update');
-    Route::get('users/{id}', [UserController::class, 'show'])->name('users.show');
-    Route::delete('users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::get('users/create', [UserController::class, 'create'])->name('admin.users.create');
+    Route::post('users/store', [UserController::class, 'store'])->name('admin.users.store');
+    Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::patch('users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::get('users/{id}', [UserController::class, 'show'])->name('admin.users.show');
+    Route::delete('users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 

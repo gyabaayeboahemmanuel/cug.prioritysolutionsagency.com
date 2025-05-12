@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\TertiaryDetails;
 use App\Models\AttachedDocuments;
+use App\Models\PersonalDetails;
+use App\Models\PostgraduateDocuments;
 use Illuminate\Http\Request;
 
 class TertiaryDetailsController extends Controller
@@ -22,7 +24,24 @@ class TertiaryDetailsController extends Controller
      */
     public function create()
     {
-        return view('user.tertiarydetails.create');
+        $user = auth()->user();
+        $pd = PersonalDetails::where('app_id', $user->app_id)->first();
+        
+        // Check if personal details exist
+        if (!$pd) {
+            return redirect()->route('personaldetails.create')
+                ->with('error', 'Please complete your personal details first.');
+        }
+
+        // Check if tertiary details already exist
+        if (TertiaryDetails::where('app_id', $user->app_id)->exists()) {
+            return redirect()->route('tertiarydetails.edit', $user->app_id)
+                ->with('info', 'You have already created your ' . 
+                      ($pd->form_type == 'postgraduate' ? 'academic qualifications' : 'tertiary details') . 
+                      '. You can edit them below.');
+        }
+
+        return view('user.tertiarydetails.create', compact('pd'));
     }
 
     /**
@@ -30,35 +49,69 @@ class TertiaryDetailsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'institution_name' => 'nullable|string|max:255',
-            'start_year' => 'nullable|integer',
-            'start_month' => 'nullable|string|max:255',
-            'completion_year' => 'nullable|integer',
-            'completion_month' => 'nullable|string|max:255',
-            'certificate_obtained' => 'nullable|string|max:255',
+        $user = auth()->user();
+        $pd = PersonalDetails::where('app_id', $user->app_id)->first();
 
-            'institution_name2' => 'nullable|string|max:255',
-            'start_year2' => 'nullable|integer',
-            'start_month2' => 'nullable|string|max:255',
-            'completion_year2' => 'nullable|integer',
-            'completion_month2' => 'nullable|string|max:255',
-            'certificate_obtained2' => 'nullable|string|max:255',
+        // Different validation rules for postgraduate vs undergraduate
+        if ($pd && $pd->form_type == 'postgraduate') {
+            $data = $request->validate([
+                'institution_name' => 'required|string|max:255',
+                'start_year' => 'required|integer',
+                'start_month' => 'required|string|max:255',
+                'completion_year' => 'required|integer',
+                'completion_month' => 'required|string|max:255',
+                'certificate_obtained' => 'required|string|max:255',
 
-            'institution_name3' => 'nullable|string|max:255',
-            'start_year3' => 'nullable|integer',
-            'start_month3' => 'nullable|string|max:255',
-            'completion_year3' => 'nullable|integer',
-            'completion_month3' => 'nullable|string|max:255',
-            'certificate_obtained3' => 'nullable|string|max:255',
-        ]);
+                'institution_name2' => 'nullable|string|max:255',
+                'start_year2' => 'nullable|integer',
+                'start_month2' => 'nullable|string|max:255',
+                'completion_year2' => 'nullable|integer',
+                'completion_month2' => 'nullable|string|max:255',
+                'certificate_obtained2' => 'nullable|string|max:255',
 
-        // Automatically assign the authenticated user's app_id
-        $data['app_id'] = auth()->user()->app_id;
+                'institution_name3' => 'nullable|string|max:255',
+                'start_year3' => 'nullable|integer',
+                'start_month3' => 'nullable|string|max:255',
+                'completion_year3' => 'nullable|integer',
+                'completion_month3' => 'nullable|string|max:255',
+                'certificate_obtained3' => 'nullable|string|max:255',
+            ]);
+        } else {
+            $data = $request->validate([
+                'institution_name' => 'nullable|string|max:255',
+                'start_year' => 'nullable|integer',
+                'start_month' => 'nullable|string|max:255',
+                'completion_year' => 'nullable|integer',
+                'completion_month' => 'nullable|string|max:255',
+                'certificate_obtained' => 'nullable|string|max:255',
 
+                'institution_name2' => 'nullable|string|max:255',
+                'start_year2' => 'nullable|integer',
+                'start_month2' => 'nullable|string|max:255',
+                'completion_year2' => 'nullable|integer',
+                'completion_month2' => 'nullable|string|max:255',
+                'certificate_obtained2' => 'nullable|string|max:255',
+
+                'institution_name3' => 'nullable|string|max:255',
+                'start_year3' => 'nullable|integer',
+                'start_month3' => 'nullable|string|max:255',
+                'completion_year3' => 'nullable|integer',
+                'completion_month3' => 'nullable|string|max:255',
+                'certificate_obtained3' => 'nullable|string|max:255',
+            ]);
+        }
+
+        $data['app_id'] = $user->app_id;
         TertiaryDetails::create($data);
 
-        return redirect()->route('attacheddocuments.create')->with('success', 'Tertiary Details added successfully.');
+        // Redirect based on application type
+        if ($pd && $pd->form_type == 'postgraduate') {
+            return redirect()->route('postgraduatedocuments.index')
+                ->with('success', 'Academic qualifications added successfully.');
+        }
+
+        return redirect()->route('attacheddocuments.create')
+            ->with('success', 'Tertiary details added successfully.');
     }
 
     /**
@@ -68,12 +121,14 @@ class TertiaryDetailsController extends Controller
     {
         $td = TertiaryDetails::where('app_id', $app_id)->first();
         $atd = AttachedDocuments::where('app_id', $app_id)->first();
+        $pd = PersonalDetails::where('app_id', $app_id)->first();
         
         if (!$td) {
-            return redirect()->back()->with('error', 'Tertiary Details not found.');
+            return redirect()->route('tertiarydetails.create')
+                ->with('error', 'Please create your tertiary details first.');
         }
 
-        return view('user.tertiarydetails.edit', compact('td', 'atd'));
+        return view('user.tertiarydetails.edit', compact('td', 'atd', 'pd'));
     }
 
     /**
@@ -81,39 +136,68 @@ class TertiaryDetailsController extends Controller
      */
     public function update(Request $request, string $app_id)
     {
-        $data = $request->validate([
-            'institution_name' => 'nullable|max:255',
-            'start_year' => 'nullable|integer',
-            'start_month' => 'nullable|string|max:255',
-            'completion_year' => 'nullable|integer',
-            'completion_month' => 'nullable|string|max:255',
-            'certificate_obtained' => 'nullable|string|max:255',
+        $pd = PersonalDetails::where('app_id', $app_id)->first();
 
-            'institution_name2' => 'nullable|string|max:255',
-            'start_year2' => 'nullable|integer',
-            'start_month2' => 'nullable|string|max:255',
-            'completion_year2' => 'nullable|integer',
-            'completion_month2' => 'nullable|string|max:255',
-            'certificate_obtained2' => 'nullable|string|max:255',
+        // Different validation rules for postgraduate vs undergraduate
+        if ($pd && $pd->form_type == 'postgraduate') {
+            $data = $request->validate([
+                'institution_name' => 'required|max:255',
+                'start_year' => 'required|integer',
+                'start_month' => 'required|string|max:255',
+                'completion_year' => 'required|integer',
+                'completion_month' => 'required|string|max:255',
+                'certificate_obtained' => 'required|string|max:255',
 
-            'institution_name3' => 'nullable|string|max:255',
-            'start_year3' => 'nullable|integer',
-            'start_month3' => 'nullable|string|max:255',
-            'completion_year3' => 'nullable|integer',
-            'completion_month3' => 'nullable|string|max:255',
-            'certificate_obtained3' => 'nullable|string|max:255',
-        ]);
+                'institution_name2' => 'nullable|string|max:255',
+                'start_year2' => 'nullable|integer',
+                'start_month2' => 'nullable|string|max:255',
+                'completion_year2' => 'nullable|integer',
+                'completion_month2' => 'nullable|string|max:255',
+                'certificate_obtained2' => 'nullable|string|max:255',
+
+                'institution_name3' => 'nullable|string|max:255',
+                'start_year3' => 'nullable|integer',
+                'start_month3' => 'nullable|string|max:255',
+                'completion_year3' => 'nullable|integer',
+                'completion_month3' => 'nullable|string|max:255',
+                'certificate_obtained3' => 'nullable|string|max:255',
+            ]);
+        } else {
+            $data = $request->validate([
+                'institution_name' => 'nullable|max:255',
+                'start_year' => 'nullable|integer',
+                'start_month' => 'nullable|string|max:255',
+                'completion_year' => 'nullable|integer',
+                'completion_month' => 'nullable|string|max:255',
+                'certificate_obtained' => 'nullable|string|max:255',
+
+                'institution_name2' => 'nullable|string|max:255',
+                'start_year2' => 'nullable|integer',
+                'start_month2' => 'nullable|string|max:255',
+                'completion_year2' => 'nullable|integer',
+                'completion_month2' => 'nullable|string|max:255',
+                'certificate_obtained2' => 'nullable|string|max:255',
+
+                'institution_name3' => 'nullable|string|max:255',
+                'start_year3' => 'nullable|integer',
+                'start_month3' => 'nullable|string|max:255',
+                'completion_year3' => 'nullable|integer',
+                'completion_month3' => 'nullable|string|max:255',
+                'certificate_obtained3' => 'nullable|string|max:255',
+            ]);
+        }
 
         $td = TertiaryDetails::where('app_id', $app_id)->first();
 
         if (!$td) {
-            return redirect()->back()->with('error', 'Tertiary Details not found.');
+            return redirect()->route('tertiarydetails.create')
+                ->with('error', 'Tertiary Details not found.');
         }
 
         $td->update($data);
 
         return redirect()->route('tertiarydetails.edit', $app_id)
-            ->with('success', 'Tertiary Details updated successfully.');
+            ->with('success', ($pd && $pd->form_type == 'postgraduate' ? 'Academic qualifications' : 'Tertiary details') . ' updated successfully.');
     }
 
     /**

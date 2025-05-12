@@ -11,12 +11,12 @@ class UserController extends Controller
     {
         
         $users = User::all();
-        return view('admin.user.index', compact('users'));
+        return view('admin.users.index', compact('users'));
     }
     
     public function create()
     {
-        return view('admin.user.create');
+        return view('admin.users.create');
     }
     
     public function store(Request $request)
@@ -31,13 +31,13 @@ class UserController extends Controller
         $data['password'] = bcrypt($data['password']);
         User::create($data);
     
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
     
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('admin.user.edit', compact('user'));
+        return view('admin.users.edit', compact('user'));
     }
     
     public function update(Request $request, $id)

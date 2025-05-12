@@ -24,8 +24,9 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             if (auth()->check()) {
                 $user = auth()->user();
-                
+
                 // Existing relations
+                $view->with('usr', $user ?? null);
                 $view->with('pd', $user->personaldetails ?? null);
                 $view->with('cd', $user->contactdetails ?? null);
                 $view->with('fd', $user->familydetails ?? null);
@@ -35,9 +36,9 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('at', $user->attacheddocuments ?? null);
 
                 // New Relations - Fetch the first record for smooth navigation
-            $view->with('emp', $user->employmentdetails->first());
-            $view->with('ref', $user->references->first());
-            $view->with('pgdoc', $user->postgraduatedocuments->first());
+                $view->with('emp', $user->employmentdetails->first());
+                $view->with('ref', $user->references->first());
+                $view->with('pgdoc', $user->postgraduatedocuments->first());
             }
         });
     }

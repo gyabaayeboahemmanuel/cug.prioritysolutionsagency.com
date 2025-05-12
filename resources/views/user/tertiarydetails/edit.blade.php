@@ -154,9 +154,21 @@
                 Save Changes <i class="material-icons">save</i>
             </button>
 
+            @if($pd)
+            @if(strtolower($pd->form_type) == 'undergraduate')
             <a class="btn btn-success" href="{{ route('attacheddocuments.edit', auth()->user()->app_id) }}">
                 Next <i class="fas fa-arrow-right"></i>
             </a>
+            @elseif(strtolower($pd->form_type) == 'postgraduate')
+            <a class="btn btn-success" href="{{ route('postgraduatedocuments.index') }}">
+                Next <i class="fas fa-arrow-right"></i>
+            </a>
+            @endif
+            @else
+            <a class="btn btn-success disabled" href="#">
+                Next <i class="fas fa-arrow-right"></i>
+            </a>
+            @endif
         </div>
     </form>
 </div>
