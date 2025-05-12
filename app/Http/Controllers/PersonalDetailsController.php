@@ -157,7 +157,7 @@ class PersonalDetailsController extends Controller
         $query->orderBy($sortField, $sortDirection);
 
         // Paginate results
-        $details = $query->paginate(500);
+        $details = $query->paginate(1000);
 
         return view('admin.applicants.index', compact('details', 'sortField', 'sortDirection'));
     }

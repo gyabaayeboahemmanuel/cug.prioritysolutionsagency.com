@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PostgraduateDocuments;
+use App\Models\TertiaryDetails;
 use Illuminate\Http\Request;
 
 class PostgraduateDocumentController extends Controller
@@ -12,6 +13,14 @@ class PostgraduateDocumentController extends Controller
      */
     public function index()
     {
+        // Check if user has filled tertiary details
+        $tertiaryDetails = TertiaryDetails::where('app_id', auth()->user()->app_id)->first();
+        
+        if (!$tertiaryDetails) {
+            return redirect()->route('tertiarydetails.create')
+                ->with('error', 'Please fill in your tertiary education details before accessing postgraduate documents.');
+        }
+    
         $postgraduateDocuments = PostgraduateDocuments::where('app_id', auth()->user()->app_id)->get();
         return view('user.postgraduatedocuments.index', compact('postgraduateDocuments'));
     }
@@ -22,7 +31,7 @@ class PostgraduateDocumentController extends Controller
      */
     public function create()
     {
-        return view('user.postgraduatedocuments.create');
+        return   redirect()->route('postgraduatedocuments.index');
     }
 
     /**

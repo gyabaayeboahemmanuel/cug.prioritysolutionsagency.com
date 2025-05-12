@@ -3,7 +3,7 @@
 @section('title', 'CUG ADMISSIONS | Application')
 
 @section('content-action')
-    <a href="{{ route('admin.user.create') }}" class="btn btn-info">Add New</a>
+    <a href="{{ route('admin.users.create') }}" class="btn btn-info">Add New</a>
 @endsection
 
 @section('content')

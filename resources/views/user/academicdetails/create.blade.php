@@ -1,169 +1,141 @@
 @extends('user.components.base')
 @section('application_active', 'active bg-gradient-primary')
+@section('academic_active', 'active bg-gradient-secondary ')
+@section('atext', 'text-white')
 @section('content')
-@section('academic_active','active bg-gradient-secondary ')
-@section('atext','text-white')
 
 <div class="container mt-5">
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('academicdetails.store') }}" method="post" class="row g-3">
+    <form action="{{ route('academicdetails.store', auth()->user()->app_id) }}" method="post" class="row g-3 shadow p-4 bg-white rounded">
         @csrf
         @method('POST')
         <input type="hidden" name="app_id" readonly id="app_id" value="{{ auth()->user()->app_id }}">
 
-        <h1>Academic Details</h1>
+        <h1 class="mb-4">Academic Details</h1>
 
-        <!-- First Examination Sitting -->
-        <div class="col-md-6">
-            <label for="name_of_shs" class="form-label">Name of SHS</label>
-            <input type="text" class="form-control" id="name_of_shs" name="name_of_shs" required>
+        <div class="col-12">
+            <h4>1st Examination Sitting</h4>
         </div>
         <div class="col-md-6">
-            <label for="course_offered" class="form-label">Course Offered</label>
-            <input type="text" class="form-control" id="course_offered" name="course_offered" required>
+            <label class="form-label">Name of SHS</label>
+            <input type="text" class="form-control" name="name_of_shs" required>
         </div>
         <div class="col-md-6">
-            <label for="start_date" class="form-label">Year & Month Started</label>
-            <input type="date" class="form-control" id="start_date" name="start_date" required>
+            <label class="form-label">Course Offered</label>
+            <input type="text" class="form-control" name="course_offered" required>
         </div>
         <div class="col-md-6">
-            <label for="completion_date" class="form-label">Year & Month Completed</label>
-            <input type="date" class="form-control" id="completion_date" name="completion_date" required>
+            <label class="form-label">Year & Month Started</label>
+            <input type="date" class="form-control" name="start_date" required>
         </div>
         <div class="col-md-6">
-            <label for="exams_type" class="form-label">Exams Type</label>
-            <input type="text" class="form-control" id="exams_type" name="exams_type" required>
+            <label class="form-label">Year & Month Completed</label>
+            <input type="date" class="form-control" name="completion_date" required>
         </div>
         <div class="col-md-6">
-            <label for="index_number" class="form-label">Index Number</label>
-            <input type="text" class="form-control" id="index_number" name="index_number" required>
+            <label class="form-label">Exams Type</label>
+            <select class="form-select" name="exams_type" required>
+                <option value="" selected disabled>Select Exam Type</option>
+                <option value="WASSCE School Candidate">WASSCE School Candidate</option>
+                <option value="WASSCE Private Candidate">WASSCE Private Candidate</option>
+                <option value="GCE O Level">GCE O Level</option>
+                <option value="GCE A Level">GCE A Level</option>
+            </select>
         </div>
         <div class="col-md-6">
-            <label for="exams_year" class="form-label">Exams Year</label>
-            <input type="number" class="form-control" id="exams_year" name="exams_year" required>
+            <label class="form-label">Index Number</label>
+            <input type="text" class="form-control" name="index_number" required>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Exams Year</label>
+            <input type="number" class="form-control" name="exams_year" required>
         </div>
 
-        <!-- Button to Add Second Sitting -->
-        <div class="col-md-12">
-            <button type="button" class="btn btn-secondary" id="addSecondSitting">Add 2nd Examination Sitting</button>
+        <div id="secondSitting" style="display: none;" class="col-12">
+            <h4 class="mt-4">2nd Examination Sitting</h4>
+        </div>
+        @foreach (['name_of_shs2', 'course_offered2', 'start_date2', 'completion_date2', 'exams_type2', 'index_number2', 'exams_year2'] as $field)
+            <div class="col-md-6 second-sitting" style="display: none;">
+                <label class="form-label">{{ ucwords(str_replace('_', ' ', $field)) }}</label>
+                @if($field == 'exams_type2')
+                    <select class="form-select" name="{{ $field }}">
+                        <option value="" selected disabled>Select Exam Type</option>
+                        <option value="WASSCE School Candidate">WASSCE School Candidate</option>
+                        <option value="WASSCE Private Candidate">WASSCE Private Candidate</option>
+                        <option value="GCE O Level">GCE O Level</option>
+                        <option value="GCE A Level">GCE A Level</option>
+                    </select>
+                @else
+                    <input type="{{ str_contains($field, 'date') ? 'date' : 'text' }}" class="form-control" name="{{ $field }}">
+                @endif
+            </div>
+        @endforeach
+
+        <div id="thirdSitting" style="display: none;" class="col-12">
+            <h4 class="mt-4">3rd Examination Sitting</h4>
+        </div>
+        @foreach (['name_of_shs3', 'course_offered3', 'start_date3', 'completion_date3', 'exams_type3', 'index_number3', 'exams_year3'] as $field)
+            <div class="col-md-6 third-sitting" style="display: none;">
+                <label class="form-label">{{ ucwords(str_replace('_', ' ', $field)) }}</label>
+                @if($field == 'exams_type3')
+                    <select class="form-select" name="{{ $field }}">
+                        <option value="" selected disabled>Select Exam Type</option>
+                        <option value="WASSCE School Candidate">WASSCE School Candidate</option>
+                        <option value="WASSCE Private Candidate">WASSCE Private Candidate</option>
+                        <option value="GCE O Level">GCE O Level</option>
+                        <option value="GCE A Level">GCE A Level</option>
+                    </select>
+                @else
+                    <input type="{{ str_contains($field, 'date') ? 'date' : 'text' }}" class="form-control" name="{{ $field }}">
+                @endif
+            </div>
+        @endforeach
+
+        <div class="col-md-12 mt-4">
+            <button type="button" id="addExamSitting" class="btn btn-secondary">
+                Add 2nd Examination Sitting
+            </button>
+        </div>
+        <div class="col-md-12 mt-4">
+            <button type="button" id="addThirdExamSitting" class="btn btn-secondary" style="display:none;">
+                Add 3rd Examination Sitting
+            </button>
         </div>
 
-        <!-- Second Examination Sitting (Initially Hidden) -->
-        <div id="secondSitting" style="display: none;">
-            <h2>Second Examination Sitting</h2>
-            <div class="col-md-6">
-                <label for="name_of_shs2" class="form-label">Name of SHS</label>
-                <input type="text" class="form-control" id="name_of_shs2" name="name_of_shs2">
-            </div>
-            <div class="col-md-6">
-                <label for="course_offered2" class="form-label">Course Offered</label>
-                <input type="text" class="form-control" id="course_offered2" name="course_offered2">
-            </div>
-            <div class="col-md-6">
-                <label for="start_date2" class="form-label">Year & Month Started</label>
-                <input type="date" class="form-control" id="start_date2" name="start_date2">
-            </div>
-            <div class="col-md-6">
-                <label for="completion_date2" class="form-label">Year & Month Completed</label>
-                <input type="date" class="form-control" id="completion_date2" name="completion_date2">
-            </div>
-            <div class="col-md-6">
-                <label for="exams_type2" class="form-label">Exams Type</label>
-                <input type="text" class="form-control" id="exams_type2" name="exams_type2">
-            </div>
-            <div class="col-md-6">
-                <label for="index_number2" class="form-label">Index Number</label>
-                <input type="text" class="form-control" id="index_number2" name="index_number2">
-            </div>
-            <div class="col-md-6">
-                <label for="exams_year2" class="form-label">Exams Year</label>
-                <input type="number" class="form-control" id="exams_year2" name="exams_year2">
-            </div>
+        <div class="col-12 d-flex justify-content-between mt-4">
+            <a class="btn btn-outline-secondary" href="{{ route('programdetails.create') }}">
+                <i class="material-icons">arrow_back</i> Previous
+            </a>
 
-            <!-- Button to Add Third Sitting -->
-            <div class="col-md-12">
-                <button type="button" class="btn btn-secondary" id="addThirdSitting">Add 3rd Examination Sitting</button>
-            </div>
+            <button type="submit" class="btn btn-primary">
+                Save and Continue <i class="material-icons">save</i>
+            </button>
+
+            <a class="btn btn-success disabled" href="#">
+                Next <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
-
-        <!-- Third Examination Sitting (Initially Hidden) -->
-        <div id="thirdSitting" style="display: none;">
-            <h2>Third Examination Sitting</h2>
-            <div class="col-md-6">
-                <label for="name_of_shs3" class="form-label">Name of SHS</label>
-                <input type="text" class="form-control" id="name_of_shs3" name="name_of_shs3">
-            </div>
-            <div class="col-md-6">
-                <label for="course_offered3" class="form-label">Course Offered</label>
-                <input type="text" class="form-control" id="course_offered3" name="course_offered3">
-            </div>
-            <div class="col-md-6">
-                <label for="start_date3" class="form-label">Year & Month Started</label>
-                <input type="date" class="form-control" id="start_date3" name="start_date3">
-            </div>
-            <div class="col-md-6">
-                <label for="completion_date3" class="form-label">Year & Month Completed</label>
-                <input type="date" class="form-control" id="completion_date3" name="completion_date3">
-            </div>
-            <div class="col-md-6">
-                <label for="exams_type3" class="form-label">Exams Type</label>
-                <input type="text" class="form-control" id="exams_type3" name="exams_type3">
-            </div>
-            <div class="col-md-6">
-                <label for="index_number3" class="form-label">Index Number</label>
-                <input type="text" class="form-control" id="index_number3" name="index_number3">
-            </div>
-            <div class="col-md-6">
-                <label for="exams_year3" class="form-label">Exams Year</label>
-                <input type="number" class="form-control" id="exams_year3" name="exams_year3">
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <button type="submit" class="btn btn-primary">Save and Continue</button>
-        </div>
-        <div class="row mt-4">
-    <div class="col-md-6">
-        @if (!empty($cd->app_id))
-            <a class="btn btn-secondary" href="{{ route('contactdetails.edit', $cd->app_id) }}">← Previous</a>
-        @else
-            <a class="btn btn-secondary disabled" href="#">← Previous</a>
-        @endif
-    </div>
-
-    <div class="col-md-6 text-end">
-        @if (empty($td->app_id))
-            <a class="btn btn-primary" href="{{ route('tertiarydetails.create') }}">Next →</a>
-        @else
-            <a class="btn btn-primary" href="{{ route('tertiarydetails.edit', $ad->app_id) }}">Next →</a>
-        @endif
-    </div>
-</div>
-
     </form>
 </div>
 
 <script>
-    document.getElementById('addSecondSitting').addEventListener('click', function() {
-        document.getElementById('secondSitting').style.display = 'block';
-    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const secondSittingDivs = document.querySelectorAll(".second-sitting");
+        const thirdSittingDivs = document.querySelectorAll(".third-sitting");
+        const addExamSittingBtn = document.getElementById("addExamSitting");
+        const addThirdExamSittingBtn = document.getElementById("addThirdExamSitting");
 
-    document.getElementById('addThirdSitting').addEventListener('click', function() {
-        document.getElementById('thirdSitting').style.display = 'block';
+        addExamSittingBtn.addEventListener("click", function() {
+            secondSittingDivs.forEach(div => div.style.display = "block");
+            document.getElementById("secondSitting").style.display = "block";
+            this.style.display = "none";
+            addThirdExamSittingBtn.style.display = "block";
+        });
+
+        addThirdExamSittingBtn.addEventListener("click", function() {
+            thirdSittingDivs.forEach(div => div.style.display = "block");
+            document.getElementById("thirdSitting").style.display = "block";
+            this.style.display = "none";
+        });
     });
 </script>
 

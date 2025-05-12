@@ -18,50 +18,51 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('personaldetails*') ? 'active text-white' : '' }}"
-                        href="{{ route('personaldetails.edit', $pd->app_id) }}">
+                        href="{{ route('personaldetails.edit', $usr->app_id) }}">
                         <i class="fas fa-user me-1"></i> Personal Details
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('contactdetails*') ? 'active text-white' : '' }}"
-                        href="{{ route('contactdetails.edit', $cd->app_id) }}">
+                        href="{{ route('contactdetails.edit', $usr->app_id) }}">
                         <i class="fas fa-phone me-1"></i> Contact Details
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('familydetails*') ? 'active text-white' : '' }}"
-                        href="{{ route('familydetails.edit', $fd->app_id) }}">
+                        href="{{ route('familydetails.edit', $usr->app_id) }}">
                         <i class="fas fa-users me-1"></i> Family Details
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('programdetails*') ? 'active text-white' : '' }}"
-                        href="{{ route('programdetails.edit', $pgd->app_id) }}">
+                        href="{{ route('programdetails.edit', $usr->app_id) }}">
                         <i class="fas fa-graduation-cap me-1"></i> Program Details
                     </a>
                 </li>
 
+                @if($pd)
                 @if(strtolower($pd->form_type) == 'undergraduate')
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('academicdetails*') ? 'active text-white' : '' }}"
-                        href="{{ $ad ? route('academicdetails.edit', $ad->app_id) : route('academicdetails.create') }}">
+                        href="{{ $ad ? route('academicdetails.edit', $usr->app_id) : route('academicdetails.create') }}">
                         <i class="fas fa-book-open me-1"></i> Academic Details
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('tertiarydetails*') ? 'active text-white' : '' }}"
-                        href="{{ $td ? route('tertiarydetails.edit', $td->app_id) : route('tertiarydetails.create') }}">
+                        href="{{ $td ? route('tertiarydetails.edit', $usr->app_id) : route('tertiarydetails.create') }}">
                         <i class="fas fa-building me-1"></i> Tertiary Details
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('attacheddocuments*') ? 'active text-white' : '' }}"
-                        href="{{ $at ? route('attacheddocuments.edit', $at->app_id) : route('attacheddocuments.create') }}">
+                        href="{{ $at ? route('attacheddocuments.edit', $usr->app_id) : route('attacheddocuments.create') }}">
                         <i class="fas fa-paperclip me-1"></i> Attached Documents
                     </a>
                 </li>
@@ -69,14 +70,14 @@
                 @elseif(strtolower($pd->form_type) == 'postgraduate')
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('references*') ? 'active text-white' : '' }}"
-                        href="{{ $ref ? route('references.edit', $ref->app_id) : route('references.create') }}">
+                        href="{{ $ref ? route('references.edit', $usr->app_id) : route('references.create') }}">
                         <i class="fas fa-users me-1"></i> References
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('tertiarydetails*') ? 'active text-white' : '' }}"
-                        href="{{ $td ? route('tertiarydetails.edit', $td->app_id) : route('tertiarydetails.create') }}">
+                        href="{{ $td ? route('tertiarydetails.edit', $usr->app_id) : route('tertiarydetails.create') }}">
                         <i class="fas fa-building me-1"></i> Academic Details
                     </a>
                 </li>
@@ -87,6 +88,7 @@
                         <i class="fas fa-paperclip me-1"></i> Postgraduate Documents
                     </a>
                 </li>
+                @endif
                 @endif
 
             </ul>
