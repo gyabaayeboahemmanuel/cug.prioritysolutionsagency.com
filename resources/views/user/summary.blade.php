@@ -122,7 +122,9 @@
             border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
     </style>
-
+@if (!empty($at->app_id))
+<a class="btn btn-primary " href="{{ route('application.print', auth()->user()->app_id)}}" target="_blank">VIEW / PRINT APPLICATION</a>
+@endif
     <div class="application-form-container">
         <div class="container row g-3 shadow p-4 bg-white rounded">
             <div class="row">

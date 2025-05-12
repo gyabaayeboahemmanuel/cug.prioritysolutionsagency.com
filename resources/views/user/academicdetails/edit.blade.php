@@ -5,6 +5,21 @@
 @section('content')
 
 <div class="container mt-5">
+@if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     <form action="{{ route('academicdetails.update', auth()->user()->app_id) }}" method="post" class="row g-3 shadow p-4 bg-white rounded">
         @csrf
         @method('PATCH')
@@ -50,7 +65,19 @@
         @foreach (['name_of_shs2', 'course_offered2', 'start_date2', 'completion_date2', 'exams_type2', 'index_number2', 'exams_year2'] as $field)
             <div class="col-md-6 second-sitting"  style="display: none;">
                 <label class="form-label">{{ ucwords(str_replace('_', ' ', $field)) }}</label>
+                @if($field == 'exams_type2')
+                    <select class="form-select" name="{{ $field }}">
+                        <option value="" selected disabled>Select Exam Type</option>
+                        <option value="WASSCE School Candidate">WASSCE School Candidate</option>
+                        <option value="WASSCE Private Candidate">WASSCE Private Candidate</option>
+                        <option value="GCE O Level">GCE O Level</option>
+                        <option value="GCE A Level">GCE A Level</option>
+                    </select>
+                @else
                 <input type="{{ str_contains($field, 'date') ? 'date' : 'text' }}" class="form-control" value="{{ $ad->$field }}" name="{{ $field }}">
+
+            
+                @endif
             </div>
         @endforeach
 
@@ -60,7 +87,17 @@
         @foreach (['name_of_shs3', 'course_offered3', 'start_date3', 'completion_date3', 'exams_type3', 'index_number3', 'exams_year3'] as $field)
             <div class="col-md-6 third-sitting" style="display: none;">
                 <label class="form-label">{{ ucwords(str_replace('_', ' ', $field)) }}</label>
+                @if($field == 'exams_type3')
+                    <select class="form-select" name="{{ $field }}">
+                        <option value="" selected disabled>Select Exam Type</option>
+                        <option value="WASSCE School Candidate">WASSCE School Candidate</option>
+                        <option value="WASSCE Private Candidate">WASSCE Private Candidate</option>
+                        <option value="GCE O Level">GCE O Level</option>
+                        <option value="GCE A Level">GCE A Level</option>
+                    </select>
+                @else
                 <input type="{{ str_contains($field, 'date') ? 'date' : 'text' }}" class="form-control" value="{{ $ad->$field }}" name="{{ $field }}">
+                @endif
             </div>
         @endforeach
 

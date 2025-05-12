@@ -38,29 +38,29 @@
         </div>
         <div class="col-md-6">
             <label for="institution_name" class="form-label">Name of Institution</label>
-            <input type="text" class="form-control" id="institution_name" name="institution_name" required>
+            <input type="text" class="form-control" id="institution_name" name="institution_name" {{ $pd->form_type == 'postgraduate' ? 'required' : '' }}>
         </div>
         <div class="col-md-6">
             <label for="start_year" class="form-label">Start Year</label>
-            <input type="number" class="form-control" id="start_year" name="start_year" required>
+            <input type="number" class="form-control" id="start_year" name="start_year" {{ $pd->form_type == 'postgraduate' ? 'required' : ''}}>
         </div>
         <div class="col-md-6">
             <label for="start_month" class="form-label">Start Month</label>
-            <input type="text" class="form-control" id="start_month" name="start_month" required>
+            <input type="text" class="form-control" id="start_month" name="start_month" {{ $pd->form_type == 'postgraduate' ? 'required' : ''}}>
         </div>
         <div class="col-md-6">
             <label for="completion_year" class="form-label">Completion Year</label>
-            <input type="number" class="form-control" id="completion_year" name="completion_year" required>
+            <input type="number" class="form-control" id="completion_year" name="completion_year" {{ $pd->form_type == 'postgraduate' ? 'required' : ''}}>
         </div>
         <div class="col-md-6">
             <label for="completion_month" class="form-label">Completion Month</label>
-            <input type="text" class="form-control" id="completion_month" name="completion_month" required>
+            <input type="text" class="form-control" id="completion_month" name="completion_month" {{ $pd->form_type == 'postgraduate' ? 'required' : ''}}>
         </div>
         <div class="col-md-6">
             <label for="certificate_obtained" class="form-label">
                 {{ $pd->form_type == 'postgraduate' ? 'Qualification' : 'Certificate Obtained' }}
             </label>
-            <input type="text" class="form-control" id="certificate_obtained" name="certificate_obtained" required>
+            <input type="text" class="form-control" id="certificate_obtained" name="certificate_obtained" {{ $pd->form_type == 'postgraduate' ? 'required' : ''}}>
         </div>
 
         <div class="col-12">
@@ -151,7 +151,7 @@
 
             @if($pd)
             @if(strtolower($pd->form_type) == 'undergraduate')
-            <a class="btn btn-success" href="{{ route('attacheddocuments.edit', auth()->user()->app_id) }}">
+            <a class="btn btn-success" href="{{ route('attacheddocuments.create') }}">
                 Next <i class="fas fa-arrow-right"></i>
             </a>
             @elseif(strtolower($pd->form_type) == 'postgraduate')

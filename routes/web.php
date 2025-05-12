@@ -129,35 +129,34 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // ================= Employment Details ===================== //
-Route::prefix('employmentdetails')->group(function () {
-    Route::get('/', [\App\Http\Controllers\EmploymentDetailController::class, 'index'])->name('employmentdetails.index');
-    Route::get('/create', [\App\Http\Controllers\EmploymentDetailController::class, 'create'])->name('employmentdetails.create');
-    Route::post('/store', [\App\Http\Controllers\EmploymentDetailController::class, 'store'])->name('employmentdetails.store');
-    Route::get('/{app_id}/edit', [\App\Http\Controllers\EmploymentDetailController::class, 'edit'])->name('employmentdetails.edit');
-    Route::patch('/{app_id}', [\App\Http\Controllers\EmploymentDetailController::class, 'update'])->name('employmentdetails.update');
-    Route::delete('/{app_id}', [\App\Http\Controllers\EmploymentDetailController::class, 'destroy'])->name('employmentdetails.destroy');
-});
+    Route::prefix('employmentdetails')->group(function () {
+        Route::get('/', [\App\Http\Controllers\EmploymentDetailController::class, 'index'])->name('employmentdetails.index');
+        Route::get('/create', [\App\Http\Controllers\EmploymentDetailController::class, 'create'])->name('employmentdetails.create');
+        Route::post('/store', [\App\Http\Controllers\EmploymentDetailController::class, 'store'])->name('employmentdetails.store');
+        Route::get('/{app_id}/edit', [\App\Http\Controllers\EmploymentDetailController::class, 'edit'])->name('employmentdetails.edit');
+        Route::patch('/{app_id}', [\App\Http\Controllers\EmploymentDetailController::class, 'update'])->name('employmentdetails.update');
+        Route::delete('/{app_id}', [\App\Http\Controllers\EmploymentDetailController::class, 'destroy'])->name('employmentdetails.destroy');
+    });
 
-// ================= References ===================== //
-Route::prefix('references')->group(function () {
-    Route::get('/', [\App\Http\Controllers\ReferenceController::class, 'index'])->name('references.index');
-    Route::get('/create', [\App\Http\Controllers\ReferenceController::class, 'create'])->name('references.create');
-    Route::post('/store', [\App\Http\Controllers\ReferenceController::class, 'store'])->name('references.store');
-    Route::get('/{app_id}/edit', [\App\Http\Controllers\ReferenceController::class, 'edit'])->name('references.edit');
-    Route::patch('/{app_id}', [\App\Http\Controllers\ReferenceController::class, 'update'])->name('references.update');
-    Route::delete('/{app_id}', [\App\Http\Controllers\ReferenceController::class, 'destroy'])->name('references.destroy');
-});
+    // ================= References ===================== //
+    Route::prefix('references')->group(function () {
+        Route::get('/', [\App\Http\Controllers\ReferenceController::class, 'index'])->name('references.index');
+        Route::get('/create', [\App\Http\Controllers\ReferenceController::class, 'create'])->name('references.create');
+        Route::post('/store', [\App\Http\Controllers\ReferenceController::class, 'store'])->name('references.store');
+        Route::get('/{app_id}/edit', [\App\Http\Controllers\ReferenceController::class, 'edit'])->name('references.edit');
+        Route::patch('/{app_id}', [\App\Http\Controllers\ReferenceController::class, 'update'])->name('references.update');
+        Route::delete('/{app_id}', [\App\Http\Controllers\ReferenceController::class, 'destroy'])->name('references.destroy');
+    });
 
-// ================= Postgraduate Documents ===================== //
-Route::prefix('postgraduatedocuments')->group(function () {
-    Route::get('/', [\App\Http\Controllers\PostgraduateDocumentController::class, 'index'])->name('postgraduatedocuments.index');
-    Route::get('/create', [\App\Http\Controllers\PostgraduateDocumentController::class, 'create'])->name('postgraduatedocuments.create');
-    Route::post('/store', [\App\Http\Controllers\PostgraduateDocumentController::class, 'store'])->name('postgraduatedocuments.store');
-    Route::get('/{app_id}/edit', [\App\Http\Controllers\PostgraduateDocumentController::class, 'edit'])->name('postgraduatedocuments.edit');
-    Route::patch('/{app_id}', [\App\Http\Controllers\PostgraduateDocumentController::class, 'update'])->name('postgraduatedocuments.update');
-    Route::delete('/{app_id}', [\App\Http\Controllers\PostgraduateDocumentController::class, 'destroy'])->name('postgraduatedocuments.destroy');
-});
-
+    // ================= Postgraduate Documents ===================== //
+    Route::prefix('postgraduatedocuments')->group(function () {
+        Route::get('/', [\App\Http\Controllers\PostgraduateDocumentController::class, 'index'])->name('postgraduatedocuments.index');
+        Route::get('/create', [\App\Http\Controllers\PostgraduateDocumentController::class, 'create'])->name('postgraduatedocuments.create');
+        Route::post('/store', [\App\Http\Controllers\PostgraduateDocumentController::class, 'store'])->name('postgraduatedocuments.store');
+        Route::get('/{app_id}/edit', [\App\Http\Controllers\PostgraduateDocumentController::class, 'edit'])->name('postgraduatedocuments.edit');
+        Route::patch('/{app_id}', [\App\Http\Controllers\PostgraduateDocumentController::class, 'update'])->name('postgraduatedocuments.update');
+        Route::delete('/{app_id}', [\App\Http\Controllers\PostgraduateDocumentController::class, 'destroy'])->name('postgraduatedocuments.destroy');
+    });
 });
 
 
@@ -167,9 +166,9 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/admin/google-referrals-data', function () {
     $results = DB::table('google_referrals')
-                ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
-                ->groupBy('date')
-                ->get();
+        ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+        ->groupBy('date')
+        ->get();
 
     $labels = $results->pluck('date');
     $counts = $results->pluck('count');
@@ -182,16 +181,15 @@ Route::get('/admin/google-referrals-data', function () {
 Route::get('/admin/analytics', [AnalyticsController::class, 'index'])->name('admin.analytics');
 Route::middleware(['auth', 'verified', Admin::class])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
-        // Γ£à Add this group for consistent route naming
-        Route::prefix('admin')->as('admin.')->group(function () {
-            Route::resource('posts', PostController::class);
-            Route::resource('flyers', FlyerController::class);
-            Route::resource('testimonials', TestimonialController::class);
-            // Route::resource('user', UserController::class);
-            Route::resource('vouchers', VoucherController::class);
-       
-        });
-    
+    // Γ£à Add this group for consistent route naming
+    Route::prefix('admin')->as('admin.')->group(function () {
+        Route::resource('posts', PostController::class);
+        Route::resource('flyers', FlyerController::class);
+        Route::resource('testimonials', TestimonialController::class);
+        // Route::resource('user', UserController::class);
+        Route::resource('vouchers', VoucherController::class);
+    });
+
     Route::get('/admin/applicants', [ApplicantController::class, 'index'])->name('applicant.index');
     Route::get('/admin/applicants/table', [PersonalDetailsController::class, 'adminIndex'])->name('admin.applicants.index');
 
@@ -200,17 +198,16 @@ Route::middleware(['auth', 'verified', Admin::class])->group(function () {
     Route::get('/admin/programme/create', [AdminController::class, 'programmecreate'])->name('programme.create');
     Route::post('/admin/programme/store', [AdminController::class, 'programmestore'])->name('programme.store');
 
-   // Sectional Edits
-Route::prefix('admin')->group(function () {
-    Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
-    Route::get('users/create', [UserController::class, 'create'])->name('admin.users.create');
-    Route::post('users/store', [UserController::class, 'store'])->name('admin.users.store');
-    Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-    Route::patch('users/{id}', [UserController::class, 'update'])->name('admin.users.update');
-    Route::get('users/{id}', [UserController::class, 'show'])->name('admin.users.show');
-    Route::delete('users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
-});
-
+    // Sectional Edits
+    Route::prefix('admin')->group(function () {
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
+        Route::get('users/create', [UserController::class, 'create'])->name('admin.users.create');
+        Route::post('users/store', [UserController::class, 'store'])->name('admin.users.store');
+        Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+        Route::patch('users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+        Route::get('users/{id}', [UserController::class, 'show'])->name('admin.users.show');
+        Route::delete('users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    });
 
     Route::prefix('admin')->group(function () {
         Route::get('application/{app_id}/print', [AdminController::class, 'printApplication'])->name('admin.application.print');
@@ -237,7 +234,7 @@ Route::get('/generate-pdf/{app_id}', [ApplicationController::class, 'generatePdf
 Route::get('/send-email/{id}', [ApplicantController::class, 'notifyApplicant'])->name('send.email');
 
 // ================= AUTH ROUTES ===================== //
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
 // ================= SITEMAP ===================== //
@@ -250,7 +247,10 @@ Route::get('/sitemap.xml', function () {
 
     // Public routes
     $publicRoutes = [
-        '/', '/news', '/flyers', '/contact'
+        '/',
+        '/news',
+        '/flyers',
+        '/contact'
     ];
 
     foreach ($publicRoutes as $route) {
@@ -261,15 +261,15 @@ Route::get('/sitemap.xml', function () {
         $content .= '</url>';
     }
 
-   // Home page sections (fixed slashes for hash URLs)
-   $sections = ['#hero', '#about', '#services', '#faculties', '#reviews', '#team', '#contact', '#blog'];
-   foreach ($sections as $section) {
-       $content .= '<url>';
-       $content .= '<loc>' . env('APP_URL') . '/' . $section . '</loc>'; // Added a slash
-       $content .= '<changefreq>weekly</changefreq>';
-       $content .= '<priority>0.7</priority>';
-       $content .= '</url>';
-   }
+    // Home page sections (fixed slashes for hash URLs)
+    $sections = ['#hero', '#about', '#services', '#faculties', '#reviews', '#team', '#contact', '#blog'];
+    foreach ($sections as $section) {
+        $content .= '<url>';
+        $content .= '<loc>' . env('APP_URL') . '/' . $section . '</loc>'; // Added a slash
+        $content .= '<changefreq>weekly</changefreq>';
+        $content .= '<priority>0.7</priority>';
+        $content .= '</url>';
+    }
 
     // Fetching all blog posts
     $posts = Post::all();
@@ -309,6 +309,4 @@ if (App::runningInConsole()) {
         Artisan::call('view:clear');
         echo "Sitemap Regenerated Successfully.";
     });
-
-    
 }
